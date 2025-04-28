@@ -1,0 +1,8 @@
+[package]
+name = "ruka-basic"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+indexmap = "2.9.0"
+ruka-vm = { path = "../ruka-vm" }
