@@ -8,11 +8,11 @@ impl RukaVM {
         println!("{} Bytes free", size_of::<[f64; MEMORY_SIZE]>());
 
         RukaVM {
-            pc: 0.0,
             program,
+            memory: [0.0; MEMORY_SIZE],
             call: Vec::new(),
             stack: Vec::new(),
-            memory: [0.0; MEMORY_SIZE],
+            pc: 0.0,
             ar: 0.0,
             dr: 0.0,
             cr: 0.0,
