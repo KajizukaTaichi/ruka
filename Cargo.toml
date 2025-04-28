@@ -1,0 +1,3 @@
+[workspace]
+members = ["ruka-vm", "ruka-basic"]
+resolver = "3"
