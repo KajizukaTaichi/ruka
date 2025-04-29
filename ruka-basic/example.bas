@@ -1,6 +1,12 @@
-let a = add(10, 20) - add(1, 2)
+let n = (1 + 2) * 3
+let result = pow(n, 2)
 exit program
 
-sub add(x, y)
-    return x + y
+sub pow(x, y)
+    let n = 1
+    while y > 0
+        let n = n * x
+        let y = y - 1
+    end while
+    return n
 end sub
