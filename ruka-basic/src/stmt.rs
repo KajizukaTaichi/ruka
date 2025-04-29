@@ -115,20 +115,22 @@ impl Stmt {
                 format!("\tjmp 1, line_{line}\n")
             }
             Stmt::Sub(name, args) => {
+                let mut args = args.clone();
+                args.reverse();
                 format!(
-                    "subroutine_{name}:\n{}\n\tret\n",
+                    "subroutine_{name}:\n{}",
                     args.iter()
                         .map(|arg| {
                             let addr = ctx.variables.len();
                             ctx.variables.insert(arg.to_string(), addr);
-                            format!("\tpop ar\n\tsta {addr}, ar")
+                            format!("\tpop ar\n\tsta {addr}, ar\n")
                         })
                         .collect::<Vec<_>>()
                         .concat()
                 )
             }
             Stmt::Call(name, args) => format!(
-                "\t{}\n\tcal subroutine_{name}\n",
+                "{}\tcal subroutine_{name}\n",
                 args.iter()
                     .map(|arg| arg
                         .compile(ctx)
