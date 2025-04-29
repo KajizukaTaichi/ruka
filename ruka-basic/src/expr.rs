@@ -30,7 +30,8 @@ impl Expr {
                 } else if token.contains("(") && token.ends_with(")") {
                     let token = token.get(..token.len() - 1)?.trim();
                     let (name, args) = token.split_once('(')?;
-                    let args = args.split(',').map(|s| Expr::parse(s));
+                    let args = tokenize(args, &[",", ";"], false)?;
+                    let args = args.iter().map(|s| Expr::parse(s));
                     let args = args.collect::<Option<Vec<_>>>()?;
                     Expr::Call(name.trim().to_string(), args)
                 // Variable reference
