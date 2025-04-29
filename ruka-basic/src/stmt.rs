@@ -127,7 +127,7 @@ impl Stmt {
             Stmt::Return(expr) => {
                 let expr = expr.compile(ctx)?;
                 format!(
-                    "{}psh ar\n\tret\n",
+                    "{}\tpsh ar\n\tret\n",
                     if expr.contains("\n") {
                         expr
                     } else {
