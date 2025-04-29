@@ -47,7 +47,7 @@ impl Expr {
             Expr::Value(number) => number.to_string(),
             Expr::Refer(to) => format!("\tlda ar, {}\n", ctx.variables.get(to)?),
             Expr::Call(name, args) => format!(
-                "{}\tcal subroutine_{name}\n",
+                "{}\tcal subroutine_{name}\n\tpop ar\n",
                 args.iter()
                     .map(|arg| arg
                         .compile(ctx)
