@@ -22,7 +22,7 @@ fn main() {
 struct Compiler {
     if_label_index: usize,
     while_label_index: usize,
-    variables: IndexMap<String, usize>,
+    variables: IndexMap<String, Vec<usize>>,
 }
 
 impl Compiler {
