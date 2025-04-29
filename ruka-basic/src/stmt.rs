@@ -10,8 +10,8 @@ pub enum Stmt {
     EndWhile,
     ExitWhile,
     Goto(String),
-    Call(String),
-    Sub(String),
+    Call(String, Vec<Expr>),
+    Sub(String, Vec<String>),
     Return,
     ExitProgram,
 }
@@ -22,9 +22,16 @@ impl Stmt {
         if let Some(line) = source.strip_prefix("goto") {
             Some(Stmt::Goto(line.trim().to_string()))
         } else if let Some(name) = source.strip_prefix("sub") {
-            Some(Stmt::Sub(name.trim().to_string()))
+            let (name, args) = name.trim_end_matches(')').split_once('(')?;
+            let args = args.split(',').map(|s| s.trim().to_string()).collect();
+            Some(Stmt::Sub(name.trim().to_string(), args))
         } else if let Some(name) = source.strip_prefix("call") {
-            Some(Stmt::Call(name.trim().to_string()))
+            let (name, args) = name.trim_end_matches(')').split_once('(')?;
+            let args = args
+                .split(',')
+                .map(|s| Expr::parse(s))
+                .collect::<Option<Vec<_>>>()?;
+            Some(Stmt::Call(name.trim().to_string(), args))
         } else if let Some(code) = source.strip_prefix("if") {
             Some(Stmt::If(Expr::parse(code)?))
         } else if let Some(code) = source.strip_prefix("let") {
@@ -107,10 +114,18 @@ impl Stmt {
             Stmt::Goto(line) => {
                 format!("\tjmp 1, line_{line}\n")
             }
-            Stmt::Sub(name) => {
+            Stmt::Sub(name, args) => {
                 format!("subroutine_{name}:\n")
             }
-            Stmt::Call(name) => format!("cal subroutine_{name}\n"),
+            Stmt::Call(name, args) => format!(
+                "\t{}\n\tcal subroutine_{name}\n",
+                args.iter()
+                    .map(|arg| arg
+                        .compile(ctx)
+                        .map(|compiled| format!("\tpsh {}\n", compiled)))
+                    .collect::<Option<Vec<_>>>()?
+                    .concat()
+            ),
             Stmt::Return => "\tret\n".to_owned(),
             Stmt::ExitProgram => "\thlt\n".to_owned(),
         })
