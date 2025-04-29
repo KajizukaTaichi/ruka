@@ -30,17 +30,9 @@ impl Oper {
 
     pub fn compile(&self, ctx: &mut Compiler) -> Option<String> {
         let codegen = |lhs: &Expr, rhs: &Expr, opecode: &str, ctx: &mut Compiler| {
-            let lhs = lhs.compile(ctx)?;
-            let rhs = rhs.compile(ctx)?;
-            Some(if lhs.contains("\n") && rhs.contains("\n") {
-                format!("{lhs}\tpsh ar\n{rhs}\tmov dr, ar\n\tpop ar\n\t{opecode} ar, dr\n")
-            } else if lhs.contains("\n") {
-                format!("{lhs}\t{opecode} ar, {rhs}\n")
-            } else if rhs.contains("\n") {
-                format!("{rhs}\tmov dr, ar\n\tmov ar, {lhs}\n\t{opecode} ar, dr\n")
-            } else {
-                format!("\tmov ar, {lhs}\n\t{opecode} ar, {rhs}\n")
-            })
+            let [lhs, rhs] = [expr!(lhs.compile(ctx)?), expr!(rhs.compile(ctx)?)];
+            let code = format!("{lhs}\tpsh ar\n{rhs}\tmov dr, ar\n\tpop ar\n\t{opecode} ar, dr\n");
+            Some(code)
         };
         Some(match self {
             Oper::Add(lhs, rhs) => codegen(lhs, rhs, "add", ctx)?,
