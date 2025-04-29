@@ -10,9 +10,9 @@ pub enum Stmt {
     EndWhile,
     ExitWhile,
     Goto(String),
-    Call(String, Vec<Expr>),
     Sub(String, Vec<String>),
-    Return,
+    Return(Expr),
+    EndSub,
     ExitProgram,
 }
 
@@ -25,13 +25,6 @@ impl Stmt {
             let (name, args) = name.trim_end_matches(')').split_once('(')?;
             let args = args.split(',').map(|s| s.trim().to_string()).collect();
             Some(Stmt::Sub(name.trim().to_string(), args))
-        } else if let Some(name) = source.strip_prefix("call") {
-            let (name, args) = name.trim_end_matches(')').split_once('(')?;
-            let args = args
-                .split(',')
-                .map(|s| Expr::parse(s))
-                .collect::<Option<Vec<_>>>()?;
-            Some(Stmt::Call(name.trim().to_string(), args))
         } else if let Some(code) = source.strip_prefix("if") {
             Some(Stmt::If(Expr::parse(code)?))
         } else if let Some(code) = source.strip_prefix("let") {
@@ -43,10 +36,12 @@ impl Stmt {
             Some(Stmt::ExitWhile)
         } else if let Some(name) = source.strip_prefix("while") {
             Some(Stmt::While(Expr::parse(name)?))
+        } else if let Some(name) = source.strip_prefix("return") {
+            Some(Stmt::Return(Expr::parse(name)?))
         } else if source == "end while" {
             Some(Stmt::EndWhile)
         } else if source == "end sub" || source == "exit sub" {
-            Some(Stmt::Return)
+            Some(Stmt::EndSub)
         } else if source == "else" {
             Some(Stmt::Else)
         } else if source == "end if" {
@@ -129,16 +124,18 @@ impl Stmt {
                         .concat()
                 )
             }
-            Stmt::Call(name, args) => format!(
-                "{}\tcal subroutine_{name}\n",
-                args.iter()
-                    .map(|arg| arg
-                        .compile(ctx)
-                        .map(|compiled| format!("\tpsh {}\n", compiled)))
-                    .collect::<Option<Vec<_>>>()?
-                    .concat()
-            ),
-            Stmt::Return => "\tret\n".to_owned(),
+            Stmt::Return(expr) => {
+                let expr = expr.compile(ctx)?;
+                format!(
+                    "{}push ar\n\tret\n",
+                    if expr.contains("\n") {
+                        expr
+                    } else {
+                        format!("\tmov ar, {expr}\n")
+                    }
+                )
+            }
+            Stmt::EndSub => "\tret\n".to_owned(),
             Stmt::ExitProgram => "\thlt\n".to_owned(),
         })
     }
