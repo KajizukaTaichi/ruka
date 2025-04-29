@@ -3,7 +3,9 @@ use crate::*;
 #[derive(Debug, Clone)]
 pub enum Oper {
     Add(Expr, Expr),
+    Sub(Expr, Expr),
     Mul(Expr, Expr),
+    Div(Expr, Expr),
     Eql(Expr, Expr),
     Les(Expr, Expr),
 }
@@ -16,7 +18,9 @@ impl Oper {
         let has_lhs = |len: usize| Expr::parse(&join!(token_list.get(..token_list.len() - len)?));
         Some(match operator.as_str() {
             "+" => Oper::Add(has_lhs(2)?, token),
+            "-" => Oper::Sub(token, has_lhs(2)?),
             "*" => Oper::Mul(has_lhs(2)?, token),
+            "/" => Oper::Div(token, has_lhs(2)?),
             "=" => Oper::Eql(has_lhs(2)?, token),
             "<" => Oper::Les(has_lhs(2)?, token),
             ">" => Oper::Les(token, has_lhs(2)?),
@@ -40,7 +44,9 @@ impl Oper {
         };
         Some(match self {
             Oper::Add(lhs, rhs) => codegen(lhs, rhs, "add", ctx)?,
+            Oper::Sub(lhs, rhs) => codegen(lhs, rhs, "neg ar\n\tadd", ctx)?,
             Oper::Mul(lhs, rhs) => codegen(lhs, rhs, "mul", ctx)?,
+            Oper::Div(lhs, rhs) => codegen(lhs, rhs, "inv ar\n\tmul", ctx)?,
             Oper::Eql(lhs, rhs) => codegen(lhs, rhs, "eql", ctx)?,
             Oper::Les(lhs, rhs) => codegen(lhs, rhs, "les", ctx)?,
         })
