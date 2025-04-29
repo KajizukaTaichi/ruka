@@ -59,13 +59,9 @@ impl Stmt {
     pub fn compile(&self, ctx: &mut Compiler) -> Option<String> {
         Some(match self {
             Stmt::Let(name, expr) => {
-                let len = ctx.variables.len();
-                let var = ctx.variables.get(name).cloned();
-                let mut var = var.unwrap_or(vec![len]);
-                let addr = var.pop()?;
-                var.push(addr);
-                var.push(addr);
-                ctx.variables.insert(name.to_string(), var);
+                let addr = ctx.variables.get(name).cloned();
+                let addr = addr.unwrap_or(ctx.variables.len());
+                ctx.variables.insert(name.to_string(), addr);
                 let expr = expr.compile(ctx)?;
                 if expr.contains("\n") {
                     format!("{expr}\tsta {addr}, ar\n")
@@ -126,10 +122,7 @@ impl Stmt {
                     args.iter()
                         .map(|arg| {
                             let addr = ctx.variables.len();
-                            let var = ctx.variables.get(name).cloned();
-                            let mut var = var.unwrap_or(vec![]);
-                            var.push(addr);
-                            ctx.variables.insert(arg.to_string(), var);
+                            ctx.variables.insert(arg.to_string(), addr);
                             format!("\tpop ar\n\tsta {addr}, ar\n")
                         })
                         .collect::<Vec<_>>()
