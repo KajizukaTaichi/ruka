@@ -1,4 +1,4 @@
-let n = (1 + 2) * 3
+let n = 1 + (2 * 3)
 let result = pow(n, 2)
 exit program
 
