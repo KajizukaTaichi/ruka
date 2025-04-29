@@ -51,7 +51,7 @@ impl Expr {
                 args.iter()
                     .map(|arg| arg
                         .compile(ctx)
-                        .map(|compiled| format!("\tpsh {}\n", compiled)))
+                        .map(|compiled| format!("{}\tpsh ar\n", expr!(compiled))))
                     .collect::<Option<Vec<_>>>()?
                     .concat()
             ),
