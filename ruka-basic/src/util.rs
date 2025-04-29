@@ -35,3 +35,14 @@ macro_rules! cond {
         }
     };
 }
+
+#[macro_export]
+macro_rules! expr {
+    ($expr: expr) => {
+        if $expr.contains("\n") {
+            $expr
+        } else {
+            format!("\tmov ar, {}\n", $expr)
+        }
+    };
+}
