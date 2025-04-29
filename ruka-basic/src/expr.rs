@@ -5,6 +5,7 @@ pub enum Expr {
     Value(f64),
     Refer(String),
     Oper(Box<Oper>),
+    Call(String, Vec<Expr>),
 }
 
 impl Expr {
@@ -26,6 +27,12 @@ impl Expr {
                 } else if token.starts_with("(") && token.ends_with(")") {
                     let token = token.get(1..token.len() - 1)?.trim();
                     Expr::parse(token)?
+                } else if token.contains("(") && token.ends_with(")") {
+                    let token = token.get(..token.len() - 1)?.trim();
+                    let (name, args) = token.split_once('(')?;
+                    let args = args.split(',').map(|s| Expr::parse(s));
+                    let args = args.collect::<Option<Vec<_>>>()?;
+                    Expr::Call(name.trim().to_string(), args)
                 // Variable reference
                 } else {
                     Expr::Refer(token)
@@ -39,6 +46,15 @@ impl Expr {
             Expr::Oper(oper) => oper.compile(ctx)?,
             Expr::Value(number) => number.to_string(),
             Expr::Refer(to) => format!("\tlda ar, {}\n", ctx.variables.get(to)?),
+            Expr::Call(name, args) => format!(
+                "{}\tcal subroutine_{name}\n",
+                args.iter()
+                    .map(|arg| arg
+                        .compile(ctx)
+                        .map(|compiled| format!("\tpsh {}\n", compiled)))
+                    .collect::<Option<Vec<_>>>()?
+                    .concat()
+            ),
         })
     }
 }
