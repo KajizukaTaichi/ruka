@@ -58,11 +58,7 @@ impl Stmt {
                 let addr = addr.unwrap_or(ctx.variables.len());
                 ctx.variables.insert(name.to_string(), addr);
                 let expr = expr.compile(ctx)?;
-                if expr.contains("\n") {
-                    format!("{expr}\tsta {addr}, ar\n")
-                } else {
-                    format!("\tsta {addr}, {expr}\n")
-                }
+                format!("{}\tsta {addr}, ar\n", expr!(expr))
             }
             Stmt::If(expr) => {
                 let expr = expr.compile(ctx)?;
@@ -126,14 +122,7 @@ impl Stmt {
             }
             Stmt::Return(expr) => {
                 let expr = expr.compile(ctx)?;
-                format!(
-                    "{}\tpsh ar\n\tret\n",
-                    if expr.contains("\n") {
-                        expr
-                    } else {
-                        format!("\tmov ar, {expr}\n")
-                    }
-                )
+                format!("{}\tpsh ar\n\tret\n", expr!(expr))
             }
             Stmt::EndSub => "\tret\n".to_owned(),
             Stmt::ExitProgram => "\thlt\n".to_owned(),
