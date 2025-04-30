@@ -45,7 +45,7 @@ impl Instruction {
     fn asm(source: &str, labels: &mut Labels) -> Option<Self> {
         let (opecode, operands) = source.split_once(' ').unwrap_or((source, ""));
         let operands = operands.split(',').collect::<Vec<_>>();
-        Some(match opecode {
+        Some(match opecode.to_lowercase().as_str() {
             "mov" => Self::Mov(
                 Register::asm(operands.get(0)?.trim())?,
                 Operand::asm(operands.get(1)?.trim(), labels)?,
