@@ -1,12 +1,12 @@
-let n = (1 + 2) * 3 - 7
-let result = pow(pow(n, 3), 2)
-exit program
+Let n = (1 + 2) * 3 - 7
+Let result = pow(pow(n, 3), 2)
+Exit Program
 
-sub pow(x, y)
+Sub pow(x, y)
     let n = 1
-    while y > 0
-        let n = n * x
-        let y = y - 1
-    end while
-    return n
-end sub
+    While y > 0
+        Let n = n * x
+        Let y = y - 1
+    End While
+    Return n
+End Sub
