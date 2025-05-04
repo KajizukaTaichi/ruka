@@ -1,2 +1,2 @@
 # Ruka
-BASIC compiler and VM with minimal ISA 
+BASIC and Forth compiler for VM with minimal ISA 
