@@ -40,7 +40,7 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
                 temp_body.push(Node::Value(n))
             }
             (Token::Word(name), WordState::Body, IfState::Condition) => {
-                temp_body.push(Node::Call(Word::parse(&name)))
+                temp_body.push(Node::Call(Word::parse(&name)?))
             }
             (Token::IfThen, WordState::Body, IfState::Condition) => {
                 if_state = IfState::Then;
@@ -49,7 +49,7 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
                 temp_then.push(Node::Value(n));
             }
             (Token::Word(name), WordState::Body, IfState::Then) => {
-                temp_then.push(Node::Call(Word::parse(&name)))
+                temp_then.push(Node::Call(Word::parse(&name)?))
             }
             (Token::IfElse, WordState::Body, IfState::Then) => {
                 if_state = IfState::Else;
@@ -58,7 +58,7 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
                 temp_else.push(Node::Value(n));
             }
             (Token::Word(name), WordState::Body, IfState::Else) => {
-                temp_else.push(Node::Call(Word::parse(&name)))
+                temp_else.push(Node::Call(Word::parse(&name)?))
             }
             (Token::IfEnd, WordState::Body, _) => {
                 temp_body.push(Node::If(temp_then.clone(), temp_else.clone()));
@@ -77,16 +77,16 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
 }
 
 impl Word {
-    fn parse(source: &str) -> Word {
-        match source {
-            "足" => Word::Add,
-            "引" => Word::Sub,
-            "掛" => Word::Mul,
-            "割" => Word::Div,
-            "等" => Word::Equal,
-            "小" => Word::LessThan,
-            "大" => Word::GreaterThan,
+    fn parse(source: &str) -> Option<Word> {
+        Some(match source.chars().nth(0)? {
+            '足' => Word::Add,
+            '引' => Word::Sub,
+            '掛' => Word::Mul,
+            '割' => Word::Div,
+            '等' => Word::Equal,
+            '小' => Word::LessThan,
+            '大' => Word::GreaterThan,
             _ => Word::User(source.to_string()),
-        }
+        })
     }
 }
