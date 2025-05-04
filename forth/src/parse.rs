@@ -1,6 +1,6 @@
 use crate::*;
 
-pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
+pub fn parse(tokens: Vec<Token>) -> Option<Vec<Define>> {
     #[derive(Clone, Debug)]
     enum WordState {
         Name,
@@ -43,7 +43,7 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
                 word_state = WordState::Body;
             }
             (Token::DefineEnd, WordState::Body, IfState::Condition) => {
-                expr.push(TopLevel::Define(temp_name.clone()?, temp_body.clone()));
+                expr.push(Define(temp_name.clone()?, temp_body.clone()));
                 word_state = WordState::Name;
                 temp_name = None;
                 temp_body.clear()
