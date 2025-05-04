@@ -2,14 +2,21 @@ mod compile;
 mod lexer;
 mod parse;
 
+use compile::Context;
 use lexer::Token;
 use parse::parse;
 
 fn main() {
     println!("Hello, world!");
-    dbg!(parse(lexer::tokenize(
-        "A とは 素数? ならば 1 2 足 さもなければ SEX! つぎに 表示する こと"
-    )));
+    println!(
+        "{}",
+        compile!(
+            parse(lexer::tokenize(
+                "メイン　とは　1　2 足 こと"
+            ))
+            .unwrap() => &mut Context { label_index: 0 }
+        )
+    );
 }
 
 type Expr = Vec<Node>;
