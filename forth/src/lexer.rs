@@ -32,9 +32,20 @@ pub fn tokenize(source: &str) -> Vec<Token> {
 }
 
 pub fn trim_japanese(mut source: &str) -> String {
-    const SUFFIX: [&str; 8] = ["と", "が", "で", "の", "を", "な", "する", "して"];
-    for i in SUFFIX {
-        source = source.trim_end_matches(i);
+    let suffix: Vec<char> = (0x3041..=0x3096)
+        .chain(0x309D..=0x309F)
+        .filter_map(std::char::from_u32)
+        .collect();
+    loop {
+        let mut is_trimmed = false;
+        for i in suffix.clone() {
+            if let Some(stripped) = source.strip_suffix(i) {
+                is_trimmed = true;
+                source = stripped;
+            }
+        }
+        if !is_trimmed {
+            break source.to_string();
+        }
     }
-    source.to_string()
 }
