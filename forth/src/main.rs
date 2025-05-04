@@ -3,15 +3,15 @@ mod lexer;
 mod parse;
 
 use compile::Context;
-use lexer::Token;
+use lexer::{Token, tokenize};
 use parse::parse;
 use ruka_vm::*;
 
 fn main() {
     println!("Hello, world!");
     let code = include_str!("../example.mind");
+    let ast = parse(tokenize(code)).unwrap();
 
-    let ast = parse(lexer::tokenize(code)).unwrap();
     let output = compile!(ast => &mut Context { label_index: 0 });
     let asm_code = format!("\tcal word_メイン\n\thlt\n{output}");
     println!("{asm_code}");
