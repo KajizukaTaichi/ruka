@@ -17,7 +17,8 @@ fn main() {
                 ならば 2を
                 さもなければ 3を
             つぎに
-            倍する こと。"#;
+            倍する こと。
+    "#;
 
     let ast = parse(lexer::tokenize(code)).unwrap();
     let output = compile!(ast => &mut Context { label_index: 0 });
