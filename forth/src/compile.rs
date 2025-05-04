@@ -14,6 +14,17 @@ macro_rules! compile {
     };
 }
 
+impl TopLevel {
+    fn compile(&self, ctx: &mut Context) -> String {
+        match self {
+            TopLevel::Define(name, body) => {
+                let body = compile!(body => ctx);
+                format!("word_{name}:\n{body}\tret\n")
+            }
+        }
+    }
+}
+
 impl Node {
     fn compile(&self, ctx: &mut Context) -> String {
         match self {
