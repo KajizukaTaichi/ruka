@@ -14,7 +14,7 @@ pub fn tokenize(source: &str) -> Vec<Token> {
     for token in source.split_whitespace() {
         match token {
             "とは" => result.push(Token::DefineStart),
-            "こと" => result.push(Token::DefineEnd),
+            "こと。" => result.push(Token::DefineEnd),
             "ならば" => result.push(Token::IfThen),
             "さもなければ" => result.push(Token::IfElse),
             "つぎに" => result.push(Token::IfEnd),
