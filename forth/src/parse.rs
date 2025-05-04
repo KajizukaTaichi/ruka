@@ -18,8 +18,8 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
 
     let mut temp_name = None;
     let mut temp_body: Vec<Node> = vec![];
-    let mut temp_then: Vec<Node> = vec![];
-    let mut temp_else: Vec<Node> = vec![];
+    let mut temp_then: Vec<Vec<Node>> = vec![vec![]];
+    let mut temp_else: Vec<Vec<Node>> = vec![vec![]];
     let mut expr = Vec::new();
 
     for token in tokens {
@@ -27,8 +27,8 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
             () => {
                 match if_state {
                     IfState::Condition => &mut temp_body,
-                    IfState::Then => &mut temp_then,
-                    IfState::Else => &mut temp_else,
+                    IfState::Then => temp_then.last_mut()?,
+                    IfState::Else => temp_else.last_mut()?,
                 }
             };
         }
@@ -55,15 +55,12 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
                 if_state = IfState::Else;
             }
             (Token::IfEnd, WordState::Body, _) => {
-                temp_body.push(Node::If(temp_then.clone(), temp_else.clone()));
+                temp_body.push(Node::If(temp_then.pop()?, temp_else.pop()?));
                 if_state = IfState::Condition;
                 temp_then.clear();
                 temp_else.clear();
             }
-            _ => {
-                dbg!((token.clone(), &word_state, &if_state));
-                return None;
-            }
+            _ => return None,
         }
     }
 
