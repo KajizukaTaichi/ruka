@@ -16,7 +16,7 @@ fn main() {
     println!("{asm_code}");
 
     let mut vm = RukaVM::new(asm(&asm_code).unwrap());
-    vm.run();
+    vm.run().unwrap();
     vm.dump();
 }
 
