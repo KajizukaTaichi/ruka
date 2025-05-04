@@ -19,6 +19,7 @@ pub fn tokenize(source: &str) -> Vec<Token> {
             "さもなければ" => result.push(Token::IfElse),
             "つぎに" => result.push(Token::IfEnd),
             _ => {
+                let token = trim_japanese(token);
                 if let Ok(num) = token.parse::<f64>() {
                     result.push(Token::Number(num));
                 } else {
@@ -28,4 +29,12 @@ pub fn tokenize(source: &str) -> Vec<Token> {
         }
     }
     result
+}
+
+pub fn trim_japanese(mut source: &str) -> String {
+    const SUFFIX: [&str; 8] = ["と", "が", "で", "の", "を", "な", "する", "して"];
+    for i in SUFFIX {
+        source = source.trim_end_matches(i);
+    }
+    source.to_string()
 }
