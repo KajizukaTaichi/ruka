@@ -78,15 +78,23 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
 
 impl Word {
     fn parse(source: &str) -> Option<Word> {
-        Some(match source.chars().nth(0)? {
-            '足' => Word::Add,
-            '引' => Word::Sub,
-            '掛' => Word::Mul,
-            '割' => Word::Div,
-            '等' => Word::Equal,
-            '小' => Word::LessThan,
-            '大' => Word::GreaterThan,
+        Some(match trim_japanese(source).as_str() {
+            "足" => Word::Add,
+            "引" => Word::Sub,
+            "掛" => Word::Mul,
+            "割" => Word::Div,
+            "等" => Word::Equal,
+            "小" => Word::LessThan,
+            "大" => Word::GreaterThan,
             _ => Word::User(source.to_string()),
         })
     }
+}
+
+fn trim_japanese(mut source: &str) -> String {
+    const SUFFIX: [&str; 8] = ["と", "が", "で", "の", "を", "な", "する", "して"];
+    for i in SUFFIX {
+        source = source.trim_end_matches(i);
+    }
+    source.to_string()
 }
