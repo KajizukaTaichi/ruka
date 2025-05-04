@@ -20,7 +20,34 @@ enum TopLevel {
 enum Node {
     If(Expr, Expr),
     Value(f64),
-    Call(Name),
+    Call(Word),
+}
+
+#[derive(Clone, Debug)]
+enum Word {
+    Add,
+    Sub,
+    Mul,
+    Div,
+    Equal,
+    LessThan,
+    GreaterThan,
+    User(Name),
+}
+
+impl Word {
+    fn parse(source: &str) -> Word {
+        match source {
+            "足" => Word::Add,
+            "引" => Word::Sub,
+            "掛" => Word::Mul,
+            "割" => Word::Div,
+            "等" => Word::Equal,
+            "小" => Word::LessThan,
+            "大" => Word::GreaterThan,
+            _ => Word::User(source.to_string()),
+        }
+    }
 }
 
 fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
@@ -61,7 +88,7 @@ fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
                 temp_body.push(Node::Value(n))
             }
             (Token::Word(name), WordState::Body, IfState::Condition) => {
-                temp_body.push(Node::Call(name.to_owned()))
+                temp_body.push(Node::Call(Word::parse(&name)))
             }
             (Token::IfThen, WordState::Body, IfState::Condition) => {
                 if_state = IfState::Then;
@@ -70,7 +97,7 @@ fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
                 temp_then.push(Node::Value(n));
             }
             (Token::Word(name), WordState::Body, IfState::Then) => {
-                temp_then.push(Node::Call(name.to_owned()))
+                temp_then.push(Node::Call(Word::parse(&name)))
             }
             (Token::IfElse, WordState::Body, IfState::Then) => {
                 if_state = IfState::Else;
@@ -79,7 +106,7 @@ fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
                 temp_else.push(Node::Value(n));
             }
             (Token::Word(name), WordState::Body, IfState::Else) => {
-                temp_else.push(Node::Call(name.to_owned()))
+                temp_else.push(Node::Call(Word::parse(&name)))
             }
             (Token::IfEnd, WordState::Body, _) => {
                 temp_body.push(Node::If(temp_then.clone(), temp_else.clone()));
