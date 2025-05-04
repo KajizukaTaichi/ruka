@@ -5,6 +5,8 @@ pub enum Token {
     IfThen,      // ならば
     IfElse,      // でなければ
     IfEnd,       // つぎに
+    WhileStart,  // 間
+    WhileEnd,    // 繰り返す
     Number(f64),
     Word(String),
 }
@@ -18,6 +20,8 @@ pub fn tokenize(source: &str) -> Vec<Token> {
             "ならば" => result.push(Token::IfThen),
             "でなければ" => result.push(Token::IfElse),
             "つぎに" => result.push(Token::IfEnd),
+            "間" => result.push(Token::WhileStart),
+            "繰り返す" => result.push(Token::WhileEnd),
             _ => {
                 let token = trim_japanese(token);
                 if let Ok(num) = token.parse::<f64>() {
