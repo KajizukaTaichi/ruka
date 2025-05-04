@@ -8,6 +8,7 @@ use parse::parse;
 use ruka_vm::*;
 
 fn main() {
+    println!("Hello, world!");
     let code = "メイン　とは　1　2 足 こと";
 
     let ast = parse(lexer::tokenize(code)).unwrap();
