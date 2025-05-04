@@ -32,7 +32,6 @@ enum TopLevel {
 #[derive(Clone, Debug)]
 enum Node {
     If(Expr, Expr),
-    While(Expr),
     Value(f64),
     Call(Word),
 }
