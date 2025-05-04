@@ -44,6 +44,10 @@ dependencies = [
 [[package]]
 name = "ruka-forth"
 version = "0.1.0"
+dependencies = [
+ "indexmap",
+ "ruka-vm",
+]
 
 [[package]]
 name = "ruka-vm"
