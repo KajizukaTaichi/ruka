@@ -9,7 +9,7 @@ use ruka_vm::*;
 
 fn main() {
     println!("Hello, world!");
-    let code = "メイン　とは　1　2 足 こと";
+    let code = "倍 とは 2 掛 こと メイン とは 3 倍 こと";
 
     let ast = parse(lexer::tokenize(code)).unwrap();
     let output = compile!(ast => &mut Context { label_index: 0 });
