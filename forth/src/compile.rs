@@ -1,21 +1,22 @@
 use crate::*;
 
-struct Context {
-    label_index: usize,
+pub struct Context {
+    pub label_index: usize,
 }
 
+#[macro_export]
 macro_rules! compile {
     ($node:expr => $ctx:expr) => {
         $node
             .iter()
             .map(|node| node.compile($ctx))
             .collect::<Vec<_>>()
-            .join("\n\n")
+            .concat()
     };
 }
 
 impl TopLevel {
-    fn compile(&self, ctx: &mut Context) -> String {
+    pub fn compile(&self, ctx: &mut Context) -> String {
         match self {
             TopLevel::Define(name, body) => {
                 let body = compile!(body => ctx);
