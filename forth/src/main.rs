@@ -9,16 +9,7 @@ use ruka_vm::*;
 
 fn main() {
     println!("Hello, world!");
-    let code = r#"
-        倍 とは
-            2を 掛ける こと。
-        メイン とは
-            5 倍が 10と 等しい
-                ならば 2を
-                さもなければ 3を
-            つぎに
-            倍する こと。
-    "#;
+    let code = include_str!("../example.mind");
 
     let ast = parse(lexer::tokenize(code)).unwrap();
     let output = compile!(ast => &mut Context { label_index: 0 });
