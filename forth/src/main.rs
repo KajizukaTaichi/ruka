@@ -25,9 +25,7 @@ type Expr = Vec<Node>;
 type Name = String;
 
 #[derive(Clone, Debug)]
-enum TopLevel {
-    Define(Name, Expr),
-}
+struct Define(Name, Expr);
 
 #[derive(Clone, Debug)]
 enum Node {
