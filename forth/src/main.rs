@@ -9,8 +9,15 @@ use ruka_vm::*;
 
 fn main() {
     println!("Hello, world!");
-    let code =
-        "倍 とは 2 掛ける こと メイン とは 5 倍 10 等しい ならば 2 さもなければ 3 つぎに 倍 こと";
+    let code = r#"
+        倍 とは
+            2 掛ける こと
+        メイン とは
+            5 倍 10 等しい
+                ならば 2
+                さもなければ 3
+            つぎに 倍
+            こと"#;
 
     let ast = parse(lexer::tokenize(code)).unwrap();
     let output = compile!(ast => &mut Context { label_index: 0 });
