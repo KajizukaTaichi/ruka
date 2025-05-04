@@ -5,4 +5,4 @@ edition = "2024"
 
 [dependencies]
 indexmap = "2.9.0"
-ruka-vm = { path = "../ruka-vm" }
+ruka-vm = { path = "../vm" }
