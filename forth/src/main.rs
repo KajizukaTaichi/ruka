@@ -11,12 +11,12 @@ fn main() {
     println!("Hello, world!");
     let code = r#"
         倍 とは
-            2 掛ける こと
+            2を 掛ける こと
         メイン とは
-            5 倍 10 等しい
-                ならば 2
-                さもなければ 3
-            つぎに 倍
+            5 倍が 10と 等しい
+                ならば 2を
+                さもなければ 3を
+            つぎに 倍する
             こと"#;
 
     let ast = parse(lexer::tokenize(code)).unwrap();
