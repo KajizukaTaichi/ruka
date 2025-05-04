@@ -3,30 +3,33 @@ use lexer::Token;
 
 fn main() {
     println!("Hello, world!");
+    dbg!(parse(lexer::tokenize(
+        "A とは 素数? ならば 1 2 足す さもなければ SEX! つぎに 表示する こと"
+    )));
 }
 
 type Expr = Vec<Node>;
 type Name = String;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 enum TopLevel {
-    If(Expr, Expr),
     Define(Name, Expr),
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 enum Node {
+    If(Expr, Expr),
     Value(f64),
     Call(Name),
 }
 
 fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
-    #[derive(Clone)]
+    #[derive(Clone, Debug)]
     enum WordState {
         Name,
         Body,
     }
-    #[derive(Clone)]
+    #[derive(Clone, Debug)]
     enum IfState {
         Condition,
         Then,
@@ -43,7 +46,7 @@ fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
     let mut expr = Vec::new();
 
     for token in tokens {
-        match (token, word_state.clone(), if_state.clone()) {
+        match (token.clone(), word_state.clone(), if_state.clone()) {
             (Token::Word(name), WordState::Name, IfState::Condition) => {
                 temp_name = Some(name.to_owned())
             }
@@ -61,7 +64,7 @@ fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
                 temp_body.push(Node::Call(name.to_owned()))
             }
             (Token::IfThen, WordState::Body, IfState::Condition) => {
-                if_state = IfState::Else;
+                if_state = IfState::Then;
             }
             (Token::Number(n), WordState::Body, IfState::Then) => {
                 temp_then.push(Node::Value(n));
@@ -79,10 +82,13 @@ fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
                 temp_else.push(Node::Call(name.to_owned()))
             }
             (Token::IfEnd, WordState::Body, _) => {
-                expr.push(TopLevel::If(temp_then.clone(), temp_else.clone()));
+                temp_body.push(Node::If(temp_then.clone(), temp_else.clone()));
                 if_state = IfState::Condition;
             }
-            _ => return None,
+            _ => {
+                dbg!((token.clone(), &word_state, &if_state));
+                return None;
+            }
         }
     }
 
