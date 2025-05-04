@@ -33,6 +33,8 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
             (Token::DefineEnd, WordState::Body, IfState::Condition) => {
                 expr.push(TopLevel::Define(temp_name.clone()?, temp_body.clone()));
                 word_state = WordState::Name;
+                temp_name = None;
+                temp_body.clear()
             }
             (Token::Number(n), WordState::Body, IfState::Condition) => {
                 temp_body.push(Node::Value(n))
@@ -61,6 +63,8 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
             (Token::IfEnd, WordState::Body, _) => {
                 temp_body.push(Node::If(temp_then.clone(), temp_else.clone()));
                 if_state = IfState::Condition;
+                temp_then.clear();
+                temp_else.clear();
             }
             _ => {
                 dbg!((token.clone(), &word_state, &if_state));
