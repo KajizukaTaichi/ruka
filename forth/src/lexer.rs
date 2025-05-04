@@ -1,3 +1,4 @@
+#[derive(Clone, Debug)]
 pub enum Token {
     DefineStart, // とは
     DefineEnd,   // こと
