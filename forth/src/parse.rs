@@ -23,7 +23,19 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
     let mut expr = Vec::new();
 
     for token in tokens {
+        macro_rules! var {
+            () => {
+                match if_state {
+                    IfState::Condition => &mut temp_body,
+                    IfState::Then => &mut temp_then,
+                    IfState::Else => &mut temp_else,
+                }
+            };
+        }
+
         match (token.clone(), word_state.clone(), if_state.clone()) {
+            (Token::Number(n), WordState::Body, _) => var!().push(Node::Value(n)),
+            (Token::Word(name), WordState::Body, _) => var!().push(Node::Call(Word::parse(&name)?)),
             (Token::Word(name), WordState::Name, IfState::Condition) => {
                 temp_name = Some(name.to_owned())
             }
@@ -36,29 +48,11 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<TopLevel>> {
                 temp_name = None;
                 temp_body.clear()
             }
-            (Token::Number(n), WordState::Body, IfState::Condition) => {
-                temp_body.push(Node::Value(n))
-            }
-            (Token::Word(name), WordState::Body, IfState::Condition) => {
-                temp_body.push(Node::Call(Word::parse(&name)?))
-            }
             (Token::IfThen, WordState::Body, IfState::Condition) => {
                 if_state = IfState::Then;
             }
-            (Token::Number(n), WordState::Body, IfState::Then) => {
-                temp_then.push(Node::Value(n));
-            }
-            (Token::Word(name), WordState::Body, IfState::Then) => {
-                temp_then.push(Node::Call(Word::parse(&name)?))
-            }
             (Token::IfElse, WordState::Body, IfState::Then) => {
                 if_state = IfState::Else;
-            }
-            (Token::Number(n), WordState::Body, IfState::Else) => {
-                temp_else.push(Node::Value(n));
-            }
-            (Token::Word(name), WordState::Body, IfState::Else) => {
-                temp_else.push(Node::Call(Word::parse(&name)?))
             }
             (Token::IfEnd, WordState::Body, _) => {
                 temp_body.push(Node::If(temp_then.clone(), temp_else.clone()));
