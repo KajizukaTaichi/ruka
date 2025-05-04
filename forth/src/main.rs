@@ -16,8 +16,8 @@ fn main() {
             5 倍が 10と 等しい
                 ならば 2を
                 さもなければ 3を
-            つぎに 倍する
-            こと"#;
+            つぎに
+            倍する こと"#;
 
     let ast = parse(lexer::tokenize(code)).unwrap();
     let output = compile!(ast => &mut Context { label_index: 0 });
