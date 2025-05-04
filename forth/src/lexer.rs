@@ -3,7 +3,7 @@ pub enum Token {
     DefineStart, // とは
     DefineEnd,   // こと
     IfThen,      // ならば
-    IfElse,      // さもなければ
+    IfElse,      // でなければ
     IfEnd,       // つぎに
     Number(f64),
     Word(String),
@@ -16,7 +16,7 @@ pub fn tokenize(source: &str) -> Vec<Token> {
             "とは" => result.push(Token::DefineStart),
             "こと。" => result.push(Token::DefineEnd),
             "ならば" => result.push(Token::IfThen),
-            "さもなければ" => result.push(Token::IfElse),
+            "でなければ" => result.push(Token::IfElse),
             "つぎに" => result.push(Token::IfEnd),
             _ => {
                 let token = trim_japanese(token);
