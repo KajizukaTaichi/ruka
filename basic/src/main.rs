@@ -32,7 +32,6 @@ impl Compiler {
         let bytecodes = asm(assembly).unwrap();
         let mut vm = RukaVM::new(bytecodes);
         vm.run()?;
-        vm.dump();
         Some(())
     }
 
