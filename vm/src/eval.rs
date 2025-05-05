@@ -128,6 +128,9 @@ impl RukaVM {
         clear().unwrap();
         println!("# Ruka VM");
 
+        let free = self.memory.iter().filter(|x| **x == 0.0).count();
+        println!("{} Bytes free", free);
+
         println!("Instruction: {:?}", self.instruction);
 
         println!("Registers:");
