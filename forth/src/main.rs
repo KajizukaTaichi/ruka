@@ -4,7 +4,7 @@ mod lexer;
 mod parse;
 
 use compile::Context;
-use keyword::*;
+use keyword::Keyword;
 use lexer::{Token, tokenize};
 use parse::parse;
 use ruka_vm::*;
@@ -13,7 +13,9 @@ fn main() {
     println!("こんな日本語プログラミング言語は好きですか？");
     let code = include_str!("../example.mind");
     println!("\nコード例\n```\n{code}```");
-    let ast = parse(tokenize(code)).unwrap();
+
+    let keywords = Keyword::japanese();
+    let ast = parse(tokenize(code, &keywords), &keywords).unwrap();
 
     let output = compile!(ast => &mut Context { label_index: 0 });
     let asm_code = format!("\tcal word_メイン\n\thlt\n{output}");
