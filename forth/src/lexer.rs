@@ -21,7 +21,6 @@ pub fn tokenize(source: &str, keyword: &Keyword) -> Vec<Token> {
             _ if token == keyword.if_else => result.push(Token::IfElse),
             _ if token == keyword.if_end => result.push(Token::IfEnd),
             _ => {
-                let token = trim_japanese(token);
                 if let Ok(num) = token.parse::<f64>() {
                     result.push(Token::Number(num));
                 } else {
@@ -31,23 +30,4 @@ pub fn tokenize(source: &str, keyword: &Keyword) -> Vec<Token> {
         }
     }
     result
-}
-
-pub fn trim_japanese(mut source: &str) -> String {
-    let suffix: Vec<char> = (0x3041..=0x3096)
-        .chain(0x309D..=0x309F)
-        .filter_map(std::char::from_u32)
-        .collect();
-    loop {
-        let mut is_trimmed = false;
-        for i in suffix.clone() {
-            if let Some(stripped) = source.strip_suffix(i) {
-                is_trimmed = true;
-                source = stripped;
-            }
-        }
-        if !is_trimmed {
-            break source.to_string();
-        }
-    }
 }
