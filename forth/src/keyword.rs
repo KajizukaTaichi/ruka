@@ -1,0 +1,14 @@
+pub const ADD: &str = "足";
+pub const SUB: &str = "引";
+pub const MUL: &str = "掛";
+pub const DIV: &str = "割";
+pub const EQUAL: &str = "等";
+pub const LESS_THAN: &str = "小";
+pub const GREATER_THAN: &str = "大";
+pub const LOAD: &str = "読";
+pub const STORE: &str = "書";
+pub const DEFINE_START: &str = "とは";
+pub const DEFINE_END: &str = "こと。";
+pub const IF_THEN: &str = "ならば";
+pub const IF_ELSE: &str = "でなければ";
+pub const IF_END: &str = "つぎに";
