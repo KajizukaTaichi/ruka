@@ -3,6 +3,8 @@ mod keyword;
 mod lexer;
 mod parse;
 
+use std::fs::read_to_string;
+
 use compile::Context;
 use keyword::{Keyword, Language};
 use lexer::{Token, tokenize};
@@ -10,13 +12,25 @@ use parse::parse;
 use ruka_vm::*;
 
 fn main() {
-    println!("こんな日本語プログラミング言語は好きですか？");
-    let code = include_str!("../example/machine.mind");
-    println!("\nコード例\n```\n{code}```");
+    run(&Language::Machine);
+    run(&Language::Japanese);
+    run(&Language::Russian);
+}
 
-    let lang = Language::Machine;
+fn run(lang: &Language) {
+    let code = read_to_string(format!(
+        "example/{}.mind",
+        match lang {
+            Language::Japanese => "japanese",
+            Language::Machine => "machine",
+            Language::Russian => "russia",
+        }
+    ))
+    .unwrap();
+    println!("{code}");
+
     let keywords = Keyword::new(&lang);
-    let ast = parse(tokenize(code, &keywords), &keywords).unwrap();
+    let ast = parse(tokenize(&code, &keywords), &keywords).unwrap();
 
     let output = compile!(ast => &mut Context { label_index: 0 });
     let asm_code = format!(
@@ -27,16 +41,12 @@ fn main() {
             Language::Russian => "главное",
         }
     );
-    println!("\nコンパイルされたアセンブリ\n```\n{asm_code}```");
-
-    println!("\n仮想マシン(VM)のダンプ\n```");
+    println!("{asm_code}");
 
     let bytecodes = asm(&asm_code).unwrap();
     let mut vm = RukaVM::new(bytecodes);
     vm.run().unwrap();
     vm.dump();
-
-    println!("```");
 }
 
 type Expr = Vec<Node>;
