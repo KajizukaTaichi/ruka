@@ -59,20 +59,20 @@ impl Keyword {
                 if_end: "つぎに".to_string(),
             },
             Language::Russian => Keyword {
-                add: "сложи".to_string(),             // 「сложить（加える）」の命令形
-                sub: "вычти".to_string(),             // 「вычесть（引く）」の命令形
-                mul: "умножь".to_string(),            // 「умножить（掛ける）」の命令形
-                div: "раздели".to_string(),           // 「разделить（割る）」の命令形
-                equal: "равно".to_string(),           // 「等しい」
-                less_than: "меньше".to_string(),      // 「より小さい」
-                greater_than: "больше".to_string(),   // 「より大きい」
-                load: "читай".to_string(),            // 「читать（読む）」の命令形
-                store: "запиши".to_string(),          // 「записать（書き込む）」の命令形
-                define_start: "определи".to_string(), // 「определить（定義する）」の命令形
-                define_end: "конец".to_string(),      // 「終わり」「end」
-                if_then: "если".to_string(),          // if
-                if_else: "иначе".to_string(),         // else
-                if_end: "всё".to_string(),            // then（完了・締めの意味で）
+                add: "сложи".to_string(),           // 「сложить（加える）」の命令形
+                sub: "вычти".to_string(),           // 「вычесть（引く）」の命令形
+                mul: "умножь".to_string(),          // 「умножить（掛ける）」の命令形
+                div: "раздели".to_string(),         // 「разделить（割る）」の命令形
+                equal: "равно".to_string(),         // 「等しい」
+                less_than: "меньше".to_string(),    // 「より小さい」
+                greater_than: "больше".to_string(), // 「より大きい」
+                load: "читай".to_string(),          // 「читать（読む）」の命令形
+                store: "запиши".to_string(),        // 「записать（書き込む）」の命令形
+                define_start: "есть".to_string(),   // 「определить（定義する）」の命令形
+                define_end: "конец".to_string(),    // 「終わり」「end」
+                if_then: "если".to_string(),        // if
+                if_else: "иначе".to_string(),       // else
+                if_end: "всё".to_string(),          // then（完了・締めの意味で）
             },
         }
     }
