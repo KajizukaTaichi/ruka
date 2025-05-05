@@ -17,20 +17,20 @@ fn main() {
     run(&Language::Russian);
 }
 
-fn run(lang: &Language) {
-    let code = read_to_string(format!(
+fn run(lang: &Language) -> Option<()> {
+    let Ok(code) = read_to_string(format!(
         "example/{}.mind",
         match lang {
             Language::Japanese => "japanese",
             Language::Machine => "machine",
-            Language::Russian => "russia",
+            Language::Russian => "russian",
         }
-    ))
-    .unwrap();
-    println!("{code}");
+    )) else {
+        return None;
+    };
 
     let keywords = Keyword::new(&lang);
-    let ast = parse(tokenize(&code, &keywords), &keywords).unwrap();
+    let ast = parse(tokenize(&code, &keywords), &keywords)?;
 
     let output = compile!(ast => &mut Context { label_index: 0 });
     let asm_code = format!(
@@ -41,12 +41,12 @@ fn run(lang: &Language) {
             Language::Russian => "главное",
         }
     );
-    println!("{asm_code}");
 
-    let bytecodes = asm(&asm_code).unwrap();
+    let bytecodes = asm(&asm_code)?;
     let mut vm = RukaVM::new(bytecodes);
-    vm.run().unwrap();
+    vm.run()?;
     vm.dump();
+    Some(())
 }
 
 type Expr = Vec<Node>;
