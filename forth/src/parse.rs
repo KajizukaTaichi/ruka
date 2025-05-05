@@ -1,7 +1,6 @@
 use crate::*;
-use keyword::*;
 
-pub fn parse(tokens: Vec<Token>) -> Option<Vec<Define>> {
+pub fn parse(tokens: Vec<Token>, keyword: &Keyword) -> Option<Vec<Define>> {
     #[derive(Clone, Debug)]
     enum WordState {
         Name,
@@ -36,7 +35,9 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<Define>> {
 
         match (token.clone(), word_state.clone(), if_state.clone()) {
             (Token::Number(n), WordState::Body, _) => var!().push(Node::Value(n)),
-            (Token::Word(name), WordState::Body, _) => var!().push(Node::Call(Word::parse(&name)?)),
+            (Token::Word(name), WordState::Body, _) => {
+                var!().push(Node::Call(Word::parse(&name, keyword)?))
+            }
             (Token::Word(name), WordState::Name, IfState::Condition) => {
                 temp_name = Some(name.to_owned())
             }
@@ -69,17 +70,17 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<Define>> {
 }
 
 impl Word {
-    fn parse(source: &str) -> Option<Word> {
+    fn parse(source: &str, keyword: &Keyword) -> Option<Word> {
         Some(match source {
-            ADD => Word::Add,
-            SUB => Word::Sub,
-            MUL => Word::Mul,
-            DIV => Word::Div,
-            EQUAL => Word::Equal,
-            LESS_THAN => Word::LessThan,
-            GREATER_THAN => Word::GreaterThan,
-            LOAD => Word::Load,
-            STORE => Word::Store,
+            _ if source == keyword.add => Word::Add,
+            _ if source == keyword.sub => Word::Sub,
+            _ if source == keyword.mul => Word::Mul,
+            _ if source == keyword.div => Word::Div,
+            _ if source == keyword.equal => Word::Equal,
+            _ if source == keyword.less_than => Word::LessThan,
+            _ if source == keyword.greater_than => Word::GreaterThan,
+            _ if source == keyword.load => Word::Load,
+            _ if source == keyword.store => Word::Store,
             _ => Word::User(source.to_string()),
         })
     }
