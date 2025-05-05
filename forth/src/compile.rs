@@ -51,7 +51,7 @@ impl Word {
             Word::LessThan => format!("\tpop dr\n\tpop ar\n\tles ar, dr\n\tpsh ar\n"),
             Word::GreaterThan => format!("\tpop ar\n\tpop dr\n\tles ar, dr\n\tpsh ar\n"),
             Word::Load => format!("\tpop ba\n\tlda ar, ba\n\tpsh ar\n"),
-            Word::Store => format!("\tpop ar\n\tpop ba\n\tsta ba, ar\n"),
+            Word::Store => format!("\tpop ba\n\tpop ar\n\tsta ba, ar\n"),
             Word::User(name) => format!("\tcal word_{name}\n"),
         }
     }
