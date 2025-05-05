@@ -30,7 +30,7 @@ struct Compiler {
 impl Compiler {
     fn run(&mut self, source: &str) -> Option<()> {
         let assembly = &self.build(source)?;
-        File::create("output.asm")
+        File::create("./basic/output.asm")
             .unwrap()
             .write_all(assembly.as_bytes())
             .unwrap();
