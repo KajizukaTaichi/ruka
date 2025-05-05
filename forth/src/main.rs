@@ -8,17 +8,23 @@ use parse::parse;
 use ruka_vm::*;
 
 fn main() {
-    println!("Hello, world!");
+    println!("こんな日本語プログラミング言語は好きですか？");
     let code = include_str!("../example.mind");
+    println!("\nコード例\n```\n{code}```");
     let ast = parse(tokenize(code)).unwrap();
 
     let output = compile!(ast => &mut Context { label_index: 0 });
     let asm_code = format!("\tcal word_メイン\n\thlt\n{output}");
-    println!("{asm_code}");
+    println!("\nコンパイルされたアセンブリ\n```\n{asm_code}```");
 
-    let mut vm = RukaVM::new(asm(&asm_code).unwrap());
+    println!("\n仮想マシン(VM)のダンプ\n```");
+
+    let bytecodes = asm(&asm_code).unwrap();
+    let mut vm = RukaVM::new(bytecodes);
     vm.run().unwrap();
     vm.dump();
+
+    println!("```");
 }
 
 type Expr = Vec<Node>;
