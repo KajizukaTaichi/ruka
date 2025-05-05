@@ -16,7 +16,7 @@ line_0:
 	pop ar
 	neg ar
 	add ar, dr
-	sta 0, ar
+	sta 0, ar	; bit
 
 line_1:
 	mov ar, 1
@@ -31,7 +31,7 @@ line_1:
 	pop ar
 	neg ar
 	add ar, dr
-	sta 1, ar
+	sta 1, ar	; max_1byte
 
 line_2:
 	hlt
@@ -45,7 +45,7 @@ subroutine_pow:
 
 line_5:
 	mov ar, 1
-	sta 4, ar
+	sta 4, ar	; n
 
 line_6:
 while_start_0:
@@ -66,7 +66,7 @@ line_7:
 	mov dr, ar
 	pop ar
 	mul ar, dr
-	sta 4, ar
+	sta 4, ar	; n
 
 line_8:
 	mov ar, 1
@@ -76,7 +76,7 @@ line_8:
 	pop ar
 	neg ar
 	add ar, dr
-	sta 2, ar
+	sta 2, ar	; y
 
 line_9:
 	jmp 1, while_start_0
