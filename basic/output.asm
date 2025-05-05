@@ -39,9 +39,9 @@ line_2:
 line_4:
 subroutine_pow:
 	pop ar
-	sta 2, ar
+	sta 2, ar	; y
 	pop ar
-	sta 3, ar
+	sta 3, ar	; x
 
 line_5:
 	mov ar, 1
