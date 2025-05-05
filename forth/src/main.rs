@@ -12,9 +12,8 @@ use parse::parse;
 use ruka_vm::*;
 
 fn main() {
-    run(&Language::Machine);
-    run(&Language::Japanese);
-    run(&Language::Russian);
+    let langs = [Language::Machine, Language::Japanese, Language::Russian];
+    run(&langs[0]);
 }
 
 fn run(lang: &Language) -> Option<()> {
