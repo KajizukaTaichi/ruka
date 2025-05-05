@@ -3,25 +3,24 @@ mod keyword;
 mod lexer;
 mod parse;
 
-use std::fs::read_to_string;
-
 use compile::Context;
 use keyword::{Keyword, Language};
 use lexer::{Token, tokenize};
 use parse::parse;
 use ruka_vm::*;
+use std::fs::read_to_string;
 
 fn main() {
-    let langs = [Language::Machine, Language::Japanese, Language::Russian];
-    run(&langs[0]);
+    let langs = [Language::Normal, Language::Japanese, Language::Russian];
+    run(&langs[0]).unwrap();
 }
 
 fn run(lang: &Language) -> Option<()> {
     let Ok(code) = read_to_string(format!(
         "example/{}.mind",
         match lang {
+            Language::Normal => "normal",
             Language::Japanese => "japanese",
-            Language::Machine => "machine",
             Language::Russian => "russian",
         }
     )) else {
@@ -29,21 +28,21 @@ fn run(lang: &Language) -> Option<()> {
     };
 
     let keywords = Keyword::new(&lang);
-    let ast = parse(tokenize(&code, &keywords), &keywords)?;
+    let ast = parse(tokenize(&code, &keywords), &keywords).unwrap();
 
     let output = compile!(ast => &mut Context { label_index: 0 });
     let asm_code = format!(
         "\tcal word_{}\n\thlt\n{output}",
         match lang {
+            Language::Normal => "main",
             Language::Japanese => "始まり",
-            Language::Machine => "main",
             Language::Russian => "главное",
         }
     );
 
     let bytecodes = asm(&asm_code)?;
     let mut vm = RukaVM::new(bytecodes);
-    vm.run()?;
+    vm.run();
 
     Some(())
 }
