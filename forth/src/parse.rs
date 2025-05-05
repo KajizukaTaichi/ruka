@@ -77,6 +77,8 @@ impl Word {
             "等" => Word::Equal,
             "小" => Word::LessThan,
             "大" => Word::GreaterThan,
+            "読" => Word::Load,
+            "書" => Word::Store,
             _ => Word::User(source.to_string()),
         })
     }
