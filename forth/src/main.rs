@@ -17,7 +17,7 @@ fn main() {
 
 fn run(lang: &Language) -> Option<()> {
     let Ok(code) = read_to_string(format!(
-        "./forth/example/{}.mind",
+        "./forth/example/{}.fs",
         match lang {
             Language::Normal => "normal",
             Language::Japanese => "japanese",
