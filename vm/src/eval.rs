@@ -113,6 +113,13 @@ impl RukaVM {
         Some(())
     }
 
+    pub fn returns(&mut self, mode: BasedMode) -> Option<f64> {
+        match mode {
+            BasedMode::Stack => self.stack.pop(),
+            BasedMode::Register => Some(self.ar),
+        }
+    }
+
     fn dump(&self) {
         macro_rules! view {
             ($val: expr) => {{
