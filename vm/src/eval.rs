@@ -155,8 +155,8 @@ impl RukaVM {
             println!()
         }
 
-        let free = self.memory.iter().filter(|x| **x == 0.0).count();
-        let used = self.memory.len() - free;
+        let free = self.memory.iter().filter(|x| **x == 0.0).count() * 8;
+        let used = self.memory.len() * 8 - free;
         println!("{free} Bytes free, {used} Bytes used");
 
         sleep(Duration::from_secs_f64(0.3));
