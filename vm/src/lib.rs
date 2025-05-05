@@ -8,6 +8,7 @@ pub const MEMORY_SIZE: usize = 64;
 pub struct RukaVM {
     memory: [f64; MEMORY_SIZE],
     program: Vec<Instruction>,
+    instruction: Instruction,
     call: Vec<f64>,
     stack: Vec<f64>,
     pc: f64,
