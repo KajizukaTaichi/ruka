@@ -7,7 +7,7 @@ mod util;
 use std::{fs::File, io::Write};
 
 use indexmap::IndexMap;
-use ruka_vm::{RukaVM, asm};
+use ruka_vm::{BasedMode, RukaVM, asm};
 use util::{OPERATOR, SPACE, include_letter};
 use {expr::Expr, lexer::tokenize, oper::Oper, stmt::Stmt};
 
@@ -28,21 +28,24 @@ struct Compiler {
 }
 
 impl Compiler {
-    fn run(&mut self, source: &str) -> Option<()> {
+    fn run(&mut self, source: &str) -> Option<f64> {
         let assembly = &self.build(source)?;
         File::create("./basic/output.asm")
             .unwrap()
             .write_all(assembly.as_bytes())
             .unwrap();
-        let bytecodes = asm(assembly).unwrap();
+
+        let bytecodes = asm(assembly)?;
         let mut vm = RukaVM::new(bytecodes);
+
         vm.run()?;
-        Some(())
+        Some(vm.returns(BasedMode::Register)?)
     }
 
     fn build(&mut self, source: &str) -> Option<String> {
         let mut result = String::new();
         let source = source.trim().to_lowercase();
+
         for (line, code) in source.lines().enumerate() {
             let (line, code) = code
                 .trim()
@@ -50,6 +53,7 @@ impl Compiler {
                 .map(|(line, code)| Some((ok!(line.parse::<usize>())?, code)))
                 .flatten()
                 .unwrap_or((line, code));
+
             if code.is_empty() || code.trim().starts_with("rem") {
                 continue;
             }
