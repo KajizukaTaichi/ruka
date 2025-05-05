@@ -150,7 +150,7 @@ impl RukaVM {
             println!()
         }
 
-        sleep(Duration::from_secs_f64(0.5));
+        sleep(Duration::from_secs_f64(0.3));
     }
 
     fn get_register(&mut self, register: Register) -> &mut f64 {
