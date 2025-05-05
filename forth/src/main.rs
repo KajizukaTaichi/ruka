@@ -28,7 +28,7 @@ fn run(lang: &Language) -> Option<()> {
     };
 
     let keywords = Keyword::new(&lang);
-    let ast = parse(tokenize(&code, &keywords), &keywords).unwrap();
+    let ast = parse(tokenize(&code, &keywords), &keywords)?;
 
     let output = compile!(ast => &mut Context { label_index: 0 });
     let asm_code = format!(
@@ -42,7 +42,7 @@ fn run(lang: &Language) -> Option<()> {
 
     let bytecodes = asm(&asm_code)?;
     let mut vm = RukaVM::new(bytecodes);
-    vm.run();
+    vm.run()?;
 
     Some(())
 }
