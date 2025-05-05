@@ -114,7 +114,7 @@ impl Stmt {
                         .map(|arg| {
                             let addr = ctx.variables.len();
                             ctx.variables.insert(arg.to_string(), addr);
-                            format!("\tpop ar\n\tsta {addr}, ar\n")
+                            format!("\tpop ar\n\tsta {addr}, ar\t; {arg}\n")
                         })
                         .collect::<Vec<_>>()
                         .concat()
