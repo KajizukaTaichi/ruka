@@ -6,6 +6,5 @@ main :
     10 =
         ? 1 2
         ¥ 3 4
-    ~
-    double half
+    ~ + half
     8 ! ;
