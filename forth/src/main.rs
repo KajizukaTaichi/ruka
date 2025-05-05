@@ -8,7 +8,8 @@ use keyword::{Keyword, Language};
 use lexer::{Token, tokenize};
 use parse::parse;
 use ruka_vm::*;
-use std::fs::read_to_string;
+use std::fs::{File, read_to_string};
+use std::io::Write;
 
 fn main() {
     let langs = [Language::Normal, Language::Japanese, Language::Russian];
@@ -39,6 +40,11 @@ fn run(lang: &Language) -> Option<()> {
             Language::Russian => "главное",
         }
     );
+
+    File::create("./basic/output.asm")
+        .unwrap()
+        .write_all(asm_code.as_bytes())
+        .unwrap();
 
     let bytecodes = asm(&asm_code)?;
     let mut vm = RukaVM::new(bytecodes);
