@@ -41,7 +41,7 @@ fn run(lang: &Language) -> Option<()> {
         }
     );
 
-    File::create("./basic/output.asm")
+    File::create("./forth/output.asm")
         .unwrap()
         .write_all(asm_code.as_bytes())
         .unwrap();
