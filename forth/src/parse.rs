@@ -1,4 +1,5 @@
 use crate::*;
+use keyword::*;
 
 pub fn parse(tokens: Vec<Token>) -> Option<Vec<Define>> {
     #[derive(Clone, Debug)]
@@ -70,15 +71,15 @@ pub fn parse(tokens: Vec<Token>) -> Option<Vec<Define>> {
 impl Word {
     fn parse(source: &str) -> Option<Word> {
         Some(match source {
-            "足" => Word::Add,
-            "引" => Word::Sub,
-            "掛" => Word::Mul,
-            "割" => Word::Div,
-            "等" => Word::Equal,
-            "小" => Word::LessThan,
-            "大" => Word::GreaterThan,
-            "読" => Word::Load,
-            "書" => Word::Store,
+            ADD => Word::Add,
+            SUB => Word::Sub,
+            MUL => Word::Mul,
+            DIV => Word::Div,
+            EQUAL => Word::Equal,
+            LESS_THAN => Word::LessThan,
+            GREATER_THAN => Word::GreaterThan,
+            LOAD => Word::Load,
+            STORE => Word::Store,
             _ => Word::User(source.to_string()),
         })
     }
