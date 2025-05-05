@@ -58,7 +58,7 @@ impl Stmt {
                 let addr = addr.unwrap_or(ctx.variables.len());
                 ctx.variables.insert(name.to_string(), addr);
                 let expr = expr.compile(ctx)?;
-                format!("{}\tsta {addr}, ar\n", expr!(expr))
+                format!("{}\tsta {addr}, ar\t; {name}\n", expr!(expr))
             }
             Stmt::If(expr) => {
                 let expr = expr.compile(ctx)?;
