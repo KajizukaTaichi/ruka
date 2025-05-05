@@ -11,15 +11,15 @@ pub enum Token {
     Word(String),
 }
 
-pub fn tokenize(source: &str) -> Vec<Token> {
+pub fn tokenize(source: &str, keyword: &Keyword) -> Vec<Token> {
     let mut result = Vec::new();
     for token in source.split_whitespace() {
         match token {
-            DEFINE_START => result.push(Token::DefineStart),
-            DEFINE_END => result.push(Token::DefineEnd),
-            IF_THEN => result.push(Token::IfThen),
-            IF_ELSE => result.push(Token::IfElse),
-            IF_END => result.push(Token::IfEnd),
+            _ if token == keyword.define_start => result.push(Token::DefineStart),
+            _ if token == keyword.define_end => result.push(Token::DefineEnd),
+            _ if token == keyword.if_then => result.push(Token::IfThen),
+            _ if token == keyword.if_else => result.push(Token::IfElse),
+            _ if token == keyword.if_end => result.push(Token::IfEnd),
             _ => {
                 let token = trim_japanese(token);
                 if let Ok(num) = token.parse::<f64>() {
