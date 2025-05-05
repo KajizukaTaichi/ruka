@@ -135,6 +135,11 @@ impl RukaVM {
         println!(" DR: {}  CR: {}", view!(self.dr), view!(self.cr));
         println!(" BA: {}  SP: {}", view!(self.ba), view!(self.sp));
 
+        println!("Call Stack:");
+        for (i, val) in self.call.iter().enumerate() {
+            println!(" {}: {}", i, view!(*val));
+        }
+
         println!("Stack Area:");
         for (i, val) in self.stack.iter().enumerate() {
             println!(" {}: {}", i, view!(*val));
