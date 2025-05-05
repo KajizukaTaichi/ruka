@@ -4,21 +4,29 @@ mod lexer;
 mod parse;
 
 use compile::Context;
-use keyword::Keyword;
+use keyword::{Keyword, Language};
 use lexer::{Token, tokenize};
 use parse::parse;
 use ruka_vm::*;
 
 fn main() {
     println!("こんな日本語プログラミング言語は好きですか？");
-    let code = include_str!("../example.mind");
+    let code = include_str!("../example/machine.mind");
     println!("\nコード例\n```\n{code}```");
 
-    let keywords = Keyword::japanese();
+    let lang = Language::Machine;
+    let keywords = Keyword::new(&lang);
     let ast = parse(tokenize(code, &keywords), &keywords).unwrap();
 
     let output = compile!(ast => &mut Context { label_index: 0 });
-    let asm_code = format!("\tcal word_メイン\n\thlt\n{output}");
+    let asm_code = format!(
+        "\tcal word_{}\n\thlt\n{output}",
+        match lang {
+            Language::Japanese => "始まり",
+            Language::Machine => "main",
+            Language::Russian => "главное",
+        }
+    );
     println!("\nコンパイルされたアセンブリ\n```\n{asm_code}```");
 
     println!("\n仮想マシン(VM)のダンプ\n```");
