@@ -18,7 +18,7 @@ fn main() {
         variables: IndexMap::new(),
     };
     let code = include_str!("../example.bas").trim();
-    compiler.run(code).unwrap();
+    println!("{}", compiler.run(code).unwrap());
 }
 
 struct Compiler {
