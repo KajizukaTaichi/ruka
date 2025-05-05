@@ -1,3 +1,5 @@
+use crate::*;
+
 #[derive(Clone, Debug)]
 pub enum Token {
     DefineStart, // とは
@@ -13,11 +15,11 @@ pub fn tokenize(source: &str) -> Vec<Token> {
     let mut result = Vec::new();
     for token in source.split_whitespace() {
         match token {
-            "とは" => result.push(Token::DefineStart),
-            "こと。" => result.push(Token::DefineEnd),
-            "ならば" => result.push(Token::IfThen),
-            "でなければ" => result.push(Token::IfElse),
-            "つぎに" => result.push(Token::IfEnd),
+            DEFINE_START => result.push(Token::DefineStart),
+            DEFINE_END => result.push(Token::DefineEnd),
+            IF_THEN => result.push(Token::IfThen),
+            IF_ELSE => result.push(Token::IfElse),
+            IF_END => result.push(Token::IfEnd),
             _ => {
                 let token = trim_japanese(token);
                 if let Ok(num) = token.parse::<f64>() {
