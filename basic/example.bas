@@ -1,5 +1,5 @@
 Let n = (1 + 2) * 3 - 7
-Let result = pow(pow(n, 3), 2)
+Let result = pow(n, 8)
 Exit Program
 
 Sub pow(x, y)
