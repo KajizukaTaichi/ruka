@@ -1,0 +1,11 @@
+double : 2 * ;
+half : 2 / ;
+
+main :
+    5 double double half
+    10 =
+        ? 1 2
+        ¥ 3 4
+    ~
+    double half
+    8 ! ;
