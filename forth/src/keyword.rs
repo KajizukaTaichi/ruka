@@ -39,7 +39,7 @@ impl Keyword {
                 define_start: ":".to_string(),
                 define_end: ";".to_string(),
                 if_then: "?".to_string(),
-                if_else: "¥".to_string(),
+                if_else: "#".to_string(),
                 if_end: "~".to_string(),
             },
             Language::Japanese => Keyword {
