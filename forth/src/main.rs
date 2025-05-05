@@ -1,8 +1,10 @@
 mod compile;
+mod keyword;
 mod lexer;
 mod parse;
 
 use compile::Context;
+use keyword::*;
 use lexer::{Token, tokenize};
 use parse::parse;
 use ruka_vm::*;
