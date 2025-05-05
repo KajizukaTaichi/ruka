@@ -13,7 +13,7 @@ use std::io::Write;
 
 fn main() {
     let langs = [Language::Normal, Language::Japanese, Language::Russian];
-    run(&langs[0]).unwrap();
+    run(&langs[1]).unwrap();
 }
 
 fn run(lang: &Language) -> Option<()> {
