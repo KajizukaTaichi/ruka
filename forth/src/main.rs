@@ -45,7 +45,7 @@ fn run(lang: &Language) -> Option<()> {
     let bytecodes = asm(&asm_code)?;
     let mut vm = RukaVM::new(bytecodes);
     vm.run()?;
-    vm.dump();
+
     Some(())
 }
 
