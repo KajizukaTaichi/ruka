@@ -18,7 +18,7 @@ pub struct Keyword {
 
 #[derive(Clone, Debug)]
 pub enum Language {
-    Machine,
+    Normal,
     Japanese,
     Russian,
 }
@@ -26,7 +26,7 @@ pub enum Language {
 impl Keyword {
     pub fn new(lang: &Language) -> Self {
         match lang {
-            Language::Machine => Keyword {
+            Language::Normal => Keyword {
                 add: "+".to_string(),
                 sub: "-".to_string(),
                 mul: "*".to_string(),
@@ -39,8 +39,8 @@ impl Keyword {
                 define_start: ":".to_string(),
                 define_end: ";".to_string(),
                 if_then: "?".to_string(),
-                if_else: "#".to_string(),
-                if_end: "~".to_string(),
+                if_else: "¥".to_string(),
+                if_end: "#".to_string(),
             },
             Language::Japanese => Keyword {
                 add: "足".to_string(),
