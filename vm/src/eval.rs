@@ -1,6 +1,7 @@
 use crate::*;
+use clearscreen::clear;
 use colored::*;
-use std::mem::size_of;
+use std::{mem::size_of, thread::sleep, time::Duration};
 
 impl RukaVM {
     pub fn new(program: Vec<Instruction>) -> Self {
@@ -9,6 +10,7 @@ impl RukaVM {
 
         RukaVM {
             program,
+            instruction: Instruction::Nop,
             memory: [0.0; MEMORY_SIZE],
             call: Vec::new(),
             stack: Vec::new(),
@@ -23,8 +25,8 @@ impl RukaVM {
 
     pub fn run(&mut self) -> Option<()> {
         loop {
-            let instruction = self.program.get(self.pc as usize)?.clone();
-            match instruction {
+            self.instruction = self.program.get(self.pc as usize)?.clone();
+            match self.instruction {
                 Instruction::Mov(reg, val) => {
                     let val = self.get_operand(val);
                     let reg = self.get_register(reg);
@@ -105,12 +107,13 @@ impl RukaVM {
                 Instruction::Nop => {}
                 Instruction::Hlt => break,
             }
+            self.dump();
             self.pc += 1.0;
         }
         Some(())
     }
 
-    pub fn dump(&self) {
+    fn dump(&self) {
         macro_rules! view {
             ($val: expr) => {{
                 let formatted = format!("{:08}", $val);
@@ -121,6 +124,11 @@ impl RukaVM {
                 }
             }};
         }
+
+        clear().unwrap();
+        println!("# Ruka VM");
+
+        println!("Instruction: {:?}", self.instruction);
 
         println!("Registers:");
         println!(" PC: {}  AR: {}", view!(self.pc), view!(self.ar));
@@ -141,6 +149,8 @@ impl RukaVM {
             }
             println!()
         }
+
+        sleep(Duration::from_secs_f64(0.5));
     }
 
     fn get_register(&mut self, register: Register) -> &mut f64 {
