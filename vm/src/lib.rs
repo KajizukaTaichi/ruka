@@ -55,3 +55,9 @@ pub enum Register {
     Ba,
     Sp,
 }
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum BasedMode {
+    Register,
+    Stack,
+}
