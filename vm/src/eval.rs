@@ -23,7 +23,7 @@ impl RukaVM {
         }
     }
 
-    pub fn run(&mut self) -> Option<()> {
+    pub fn start(&mut self) -> Option<()> {
         loop {
             self.instruction = self.program.get(self.pc as usize)?.clone();
             match self.instruction {
