@@ -42,6 +42,8 @@ enum Word {
     Div,
     Equal,
     LessThan,
+    Load,
+    Store,
     GreaterThan,
     User(Name),
 }
