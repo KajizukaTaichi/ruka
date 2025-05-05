@@ -4,6 +4,8 @@ mod oper;
 mod stmt;
 mod util;
 
+use std::{fs::File, io::Write};
+
 use indexmap::IndexMap;
 use ruka_vm::{RukaVM, asm};
 use util::{OPERATOR, SPACE, include_letter};
@@ -28,7 +30,10 @@ struct Compiler {
 impl Compiler {
     fn run(&mut self, source: &str) -> Option<()> {
         let assembly = &self.build(source)?;
-        println!("{}", &assembly);
+        File::create("output.asm")
+            .unwrap()
+            .write_all(assembly.as_bytes())
+            .unwrap();
         let bytecodes = asm(assembly).unwrap();
         let mut vm = RukaVM::new(bytecodes);
         vm.run()?;
