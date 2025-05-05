@@ -4,5 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+clearscreen = "4.0.1"
 colored = "3.0.0"
 indexmap = "2.9.0"
