@@ -3,8 +3,8 @@ Let max_1byte = pow(bit, 8) - 1
 Exit Program
 
 Sub pow(x, y)
-    let n = 1
-    let i = 0
+    Let n = 1
+    Let i = 0
     While i < y
         Let i = i + 1
         Let n = n * x
