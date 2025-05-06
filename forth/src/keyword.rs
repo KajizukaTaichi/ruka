@@ -37,9 +37,9 @@ impl Keyword {
                 store: String::from("!"),
                 define_start: String::from(":"),
                 define_end: String::from(";"),
-                if_then: String::from("?"),
-                if_else: String::from("¥"),
-                if_end: String::from("#"),
+                if_then: String::from("if"),
+                if_else: String::from("else"),
+                if_end: String::from("then"),
             },
             Language::Mind => Keyword {
                 add: String::from("足"),
