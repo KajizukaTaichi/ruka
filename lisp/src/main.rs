@@ -1,5 +1,27 @@
+use ruka_vm::{RukaVM, asm};
+
 fn main() {
     println!("Hello, world!");
+    run().unwrap();
+}
+
+fn run() -> Option<()> {
+    let ast = Expr::List(vec![
+        Expr::Symbol(String::from("*")),
+        Expr::Value(10.0),
+        Expr::List(vec![
+            Expr::Symbol(String::from("+")),
+            Expr::Value(1.0),
+            Expr::Value(2.0),
+            Expr::Value(3.0),
+        ]),
+    ]);
+    let code = ast.compile()?;
+    let code = code + "\thlt\n";
+
+    println!("{code}");
+    RukaVM::new(asm(&code)?).start()?;
+    Some(())
 }
 
 enum Expr {
