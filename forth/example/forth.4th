@@ -4,7 +4,7 @@ half : 2 / ;
 main :
     5 dup dup half
     10 =
-        ? 1 2
-        ¥ 3 4
-    # + half
+        if 1 2
+        else 3 4
+    then + half
     8 ! ;
