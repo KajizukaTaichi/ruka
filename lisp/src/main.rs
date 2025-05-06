@@ -15,7 +15,7 @@ impl Expr {
             Expr::List(list) => match list.first()? {
                 Expr::Symbol(symbol) => {
                     macro_rules! multi_args {
-                        ($name: expr => $list:expr) => {{
+                        ($name: expr => $list: expr) => {{
                             let mut result = String::new();
                             result.push_str("\tmov ar, 0\n");
                             for expr in $list.iter().skip(1) {
