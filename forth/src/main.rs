@@ -58,7 +58,8 @@ fn run(lang: &Language) -> Option<()> {
     let mut vm = RukaVM::new(bytecodes);
     vm.start()?;
 
-    println!("{}", vm.returns(BasedMode::Stack)?);
+    let ret = vm.returns(BasedMode::Stack);
+    ret.map(|x| println!("{x}"));
     Some(())
 }
 
