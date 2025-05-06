@@ -6,16 +6,8 @@ fn main() {
 }
 
 fn run() -> Option<()> {
-    let ast = Expr::List(vec![
-        Expr::Symbol(String::from("*")),
-        Expr::Value(10.0),
-        Expr::List(vec![
-            Expr::Symbol(String::from("+")),
-            Expr::Value(1.0),
-            Expr::Value(2.0),
-            Expr::Value(3.0),
-        ]),
-    ]);
+    let source = "(* 10 (+ 1 2 3))";
+    let ast = Expr::parse(source)?;
     let code = ast.compile()?;
     let code = code + "\thlt\n";
 
@@ -31,7 +23,25 @@ enum Expr {
 }
 
 impl Expr {
-    fn parse(source: &str) -> Option<Expr> {}
+    fn parse(source: &str) -> Option<Expr> {
+        let source = source.trim();
+        if let Ok(n) = source.parse::<f64>() {
+            Some(Expr::Value(n))
+        } else if let Some(source) = source
+            .strip_prefix("(")
+            .map(|x| x.strip_suffix(")"))
+            .flatten()
+        {
+            Some(Expr::List(
+                tokenize(source)?
+                    .iter()
+                    .map(|x| Expr::parse(x))
+                    .collect::<Option<Vec<Expr>>>()?,
+            ))
+        } else {
+            Some(Expr::Symbol(source.to_string()))
+        }
+    }
 
     fn compile(&self) -> Option<String> {
         Some(match self {
@@ -63,7 +73,7 @@ impl Expr {
     }
 }
 
-fn tokenize(input: &str, delimiter: &[char]) -> Option<Vec<String>> {
+fn tokenize(input: &str) -> Option<Vec<String>> {
     let mut tokens: Vec<String> = Vec::new();
     let mut current_token = String::new();
     let mut in_parentheses: usize = 0;
@@ -98,7 +108,7 @@ fn tokenize(input: &str, delimiter: &[char]) -> Option<Vec<String>> {
                     is_escape = true;
                 }
                 other => {
-                    if delimiter.contains(&other) && !in_quote {
+                    if other.is_whitespace() && !in_quote {
                         if in_parentheses != 0 {
                             current_token.push(c);
                         } else if !current_token.is_empty() {
