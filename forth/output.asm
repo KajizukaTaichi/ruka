@@ -1,13 +1,13 @@
-	cal word_главное
+	cal word_main
 	hlt
-word_двойной:
+word_dup:
 	psh 2
 	pop dr
 	pop ar
 	mul ar, dr
 	psh ar
 	ret
-word_половина:
+word_half:
 	psh 2
 	pop dr
 	pop ar
@@ -15,11 +15,11 @@ word_половина:
 	mul ar, dr
 	psh ar
 	ret
-word_главное:
+word_main:
 	psh 5
-	cal word_двойной
-	cal word_двойной
-	cal word_половина
+	cal word_dup
+	cal word_dup
+	cal word_half
 	psh 10
 	pop dr
 	pop ar
@@ -30,19 +30,17 @@ word_главное:
 	jmp 1, else_0
 then_0:
 	psh 1
-	cal word_и
 	psh 2
 	jmp 1, end_0
 else_0:
 	psh 3
-	cal word_и
 	psh 4
 end_0:
 	pop dr
 	pop ar
 	add ar, dr
 	psh ar
-	cal word_половина
+	cal word_half
 	psh 8
 	pop ba
 	pop ar
