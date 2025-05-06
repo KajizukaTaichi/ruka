@@ -25,10 +25,8 @@ fn main() {
 }
 
 fn run(lang: &Language) -> Option<()> {
-    let Ok(code) = read_to_string(format!(
-        "./forth/example/{}.4th",
-        format!("{lang:?}").to_lowercase()
-    )) else {
+    let path = format!("./forth/example/{lang:?}.4th").to_lowercase();
+    let Ok(code) = read_to_string(path) else {
         return None;
     };
 
