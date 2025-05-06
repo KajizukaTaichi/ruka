@@ -19,17 +19,21 @@ word_半分:
 	psh ar
 	cal word_る
 	ret
-word_覚:
+word_一時記憶:
 	psh 8
-	cal word_番地に
+	cal word_番地の
+	ret
+word_覚:
+	cal word_一時記憶
+	cal word_領域に
 	pop ba
 	pop ar
 	sta ba, ar
 	cal word_き込む
 	ret
 word_思出:
-	psh 8
-	cal word_番地から
+	cal word_一時記憶
+	cal word_領域に
 	pop ba
 	lda ar, ba
 	psh ar
