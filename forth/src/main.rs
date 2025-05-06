@@ -16,9 +16,8 @@ fn main() {
     let args = args().collect::<Vec<_>>();
     let lang = args.get(1).cloned().unwrap_or("4th".to_owned());
     let lang = match lang.trim() {
-        "ja" => Language::Japanese,
-        "ru" => Language::Russian,
-        "4th" => Language::Normal,
+        "4th" => Language::Forth,
+        "mind" => Language::Mind,
         _ => panic!(),
     };
     run(&lang).unwrap();
@@ -37,9 +36,8 @@ fn run(lang: &Language) -> Option<()> {
     let asm_code = format!(
         "\tcal word_{}\n\thlt\n{output}",
         match lang {
-            Language::Normal => "main",
-            Language::Japanese => "始まり",
-            Language::Russian => "главное",
+            Language::Forth => "main",
+            Language::Mind => "始まり",
         }
     );
 
