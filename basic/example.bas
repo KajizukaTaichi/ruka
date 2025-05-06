@@ -4,9 +4,10 @@ Exit Program
 
 Sub pow(x, y)
     let n = 1
-    While y > 0
+    let i = 0
+    While i < y
+        Let i = i + 1
         Let n = n * x
-        Let y = y - 1
     End While
     Return n
 End Sub
