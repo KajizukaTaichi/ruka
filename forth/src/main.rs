@@ -51,7 +51,7 @@ fn run(lang: &Language) -> Option<()> {
     vm.start()?;
 
     let ret = vm.returns(BasedMode::Stack);
-    ret.map(|x| println!("{x}"));
+    ret.map(|x| println!(" = {x}"));
     Some(())
 }
 
