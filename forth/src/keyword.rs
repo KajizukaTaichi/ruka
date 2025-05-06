@@ -18,61 +18,44 @@ pub struct Keyword {
 
 #[derive(Clone, Debug)]
 pub enum Language {
-    Normal,
-    Japanese,
-    Russian,
+    Forth,
+    Mind,
 }
 
 impl Keyword {
     pub fn new(lang: &Language) -> Self {
         match lang {
-            Language::Normal => Keyword {
-                add: "+".to_string(),
-                sub: "-".to_string(),
-                mul: "*".to_string(),
-                div: "/".to_string(),
-                equal: "=".to_string(),
-                less_than: "<".to_string(),
-                greater_than: ">".to_string(),
-                load: "@".to_string(),
-                store: "!".to_string(),
-                define_start: ":".to_string(),
-                define_end: ";".to_string(),
-                if_then: "?".to_string(),
-                if_else: "¥".to_string(),
-                if_end: "#".to_string(),
+            Language::Forth => Keyword {
+                add: String::from("+"),
+                sub: String::from("-"),
+                mul: String::from("*"),
+                div: String::from("/"),
+                equal: String::from("="),
+                less_than: String::from("<"),
+                greater_than: String::from(">"),
+                load: String::from("@"),
+                store: String::from("!"),
+                define_start: String::from(":"),
+                define_end: String::from(";"),
+                if_then: String::from("?"),
+                if_else: String::from("¥"),
+                if_end: String::from("#"),
             },
-            Language::Japanese => Keyword {
-                add: "足".to_string(),
-                sub: "引".to_string(),
-                mul: "掛".to_string(),
-                div: "割".to_string(),
-                equal: "等".to_string(),
-                less_than: "小".to_string(),
-                greater_than: "大".to_string(),
-                load: "読".to_string(),
-                store: "書".to_string(),
-                define_start: "とは".to_string(),
-                define_end: "こと。".to_string(),
-                if_then: "ならば".to_string(),
-                if_else: "でなければ".to_string(),
-                if_end: "つぎに".to_string(),
-            },
-            Language::Russian => Keyword {
-                add: "сложи".to_string(),           // 「сложить（加える）」の命令形
-                sub: "вычти".to_string(),           // 「вычесть（引く）」の命令形
-                mul: "умножь".to_string(),          // 「умножить（掛ける）」の命令形
-                div: "раздели".to_string(),         // 「разделить（割る）」の命令形
-                equal: "равно".to_string(),         // 「等しい」
-                less_than: "меньше".to_string(),    // 「より小さい」
-                greater_than: "больше".to_string(), // 「より大きい」
-                load: "читай".to_string(),          // 「читать（読む）」の命令形
-                store: "запиши".to_string(),        // 「записать（書き込む）」の命令形
-                define_start: "есть".to_string(),   // 「определить（定義する）」の命令形
-                define_end: "конец".to_string(),    // 「終わり」「end」
-                if_then: "если".to_string(),        // if
-                if_else: "иначе".to_string(),       // else
-                if_end: "всё".to_string(),          // then（完了・締めの意味で）
+            Language::Mind => Keyword {
+                add: String::from("足"),
+                sub: String::from("引"),
+                mul: String::from("掛"),
+                div: String::from("割"),
+                equal: String::from("等"),
+                less_than: String::from("小"),
+                greater_than: String::from("大"),
+                load: String::from("読"),
+                store: String::from("書"),
+                define_start: String::from("とは"),
+                define_end: String::from("こと。"),
+                if_then: String::from("ならば"),
+                if_else: String::from("でなければ"),
+                if_end: String::from("つぎに"),
             },
         }
     }
