@@ -48,8 +48,12 @@ line_5:
 	sta 4, ar	; n
 
 line_6:
-while_start_0:
 	mov ar, 0
+	sta 5, ar	; i
+
+line_7:
+while_start_0:
+	lda ar, 5
 	psh ar
 	lda ar, 2
 	mov dr, ar
@@ -59,7 +63,16 @@ while_start_0:
 	nor cr, cr
 	jmp cr, while_end_0
 
-line_7:
+line_8:
+	lda ar, 5
+	psh ar
+	mov ar, 1
+	mov dr, ar
+	pop ar
+	add ar, dr
+	sta 5, ar	; i
+
+line_9:
 	lda ar, 4
 	psh ar
 	lda ar, 3
@@ -68,25 +81,15 @@ line_7:
 	mul ar, dr
 	sta 4, ar	; n
 
-line_8:
-	mov ar, 1
-	psh ar
-	lda ar, 2
-	mov dr, ar
-	pop ar
-	neg ar
-	add ar, dr
-	sta 2, ar	; y
-
-line_9:
+line_10:
 	jmp 1, while_start_0
 while_end_0:
 
-line_10:
+line_11:
 	lda ar, 4
 	psh ar
 	ret
 
-line_11:
+line_12:
 	ret
 
