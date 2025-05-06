@@ -8,12 +8,20 @@ use keyword::{Keyword, Language};
 use lexer::{Token, tokenize};
 use parse::parse;
 use ruka_vm::*;
+use std::env::args;
 use std::fs::{File, read_to_string};
 use std::io::Write;
 
 fn main() {
-    let langs = [Language::Normal, Language::Japanese, Language::Russian];
-    run(&langs[1]).unwrap();
+    let args = args().collect::<Vec<_>>();
+    let lang = args.get(1).cloned().unwrap_or("4th".to_owned());
+    let lang = match lang.as_str() {
+        "ja" => Language::Japanese,
+        "ru" => Language::Russian,
+        "4th" => Language::Normal,
+        _ => panic!(),
+    };
+    run(&lang).unwrap();
 }
 
 fn run(lang: &Language) -> Option<()> {
