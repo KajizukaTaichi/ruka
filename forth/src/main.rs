@@ -15,7 +15,7 @@ use std::io::Write;
 fn main() {
     let args = args().collect::<Vec<_>>();
     let lang = args.get(1).cloned().unwrap_or("4th".to_owned());
-    let lang = match lang.as_str() {
+    let lang = match lang.trim() {
         "ja" => Language::Japanese,
         "ru" => Language::Russian,
         "4th" => Language::Normal,
