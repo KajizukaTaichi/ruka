@@ -228,6 +228,9 @@ dependencies = [
 [[package]]
 name = "ruka-lisp"
 version = "0.1.0"
+dependencies = [
+ "ruka-vm",
+]
 
 [[package]]
 name = "ruka-vm"
