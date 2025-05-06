@@ -27,11 +27,7 @@ fn main() {
 fn run(lang: &Language) -> Option<()> {
     let Ok(code) = read_to_string(format!(
         "./forth/example/{}.4th",
-        match lang {
-            Language::Normal => "normal",
-            Language::Japanese => "japanese",
-            Language::Russian => "russian",
-        }
+        format!("{lang:?}").to_lowercase()
     )) else {
         return None;
     };
