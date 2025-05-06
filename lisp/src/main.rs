@@ -1,19 +1,19 @@
-use ruka_vm::{RukaVM, asm};
+use ruka_vm::{BasedMode, RukaVM, asm};
 
 fn main() {
     println!("Hello, world!");
-    run().unwrap();
+    run("(* 10 (+ 1 2 3))").unwrap();
 }
 
-fn run() -> Option<()> {
-    let source = "(* 10 (+ 1 2 3))";
+fn run(source: &str) -> Option<f64> {
     let ast = Expr::parse(source)?;
     let code = ast.compile()?;
     let code = code + "\thlt\n";
 
-    println!("{code}");
-    RukaVM::new(asm(&code)?).start()?;
-    Some(())
+    let mut vm = RukaVM::new(asm(&code)?);
+    vm.start()?;
+
+    Some(vm.returns(BasedMode::Register)?)
 }
 
 enum Expr {
