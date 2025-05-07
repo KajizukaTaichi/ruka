@@ -1,6 +1,4 @@
 line_0:
-	mov ar, 7
-	psh ar
 	mov ar, 1
 	psh ar
 	mov ar, 2
@@ -12,24 +10,26 @@ line_0:
 	mov dr, ar
 	pop ar
 	mul ar, dr
+	psh ar
+	mov ar, 7
 	mov dr, ar
 	pop ar
-	neg ar
+	neg dr
 	add ar, dr
 	sta 0, ar	; bit
 
 line_1:
-	mov ar, 1
-	psh ar
 	lda ar, 0
 	psh ar
 	mov ar, 8
 	psh ar
 	cal subroutine_pow
 	pop ar
+	psh ar
+	mov ar, 1
 	mov dr, ar
 	pop ar
-	neg ar
+	neg dr
 	add ar, dr
 	sta 1, ar	; max_1byte
 
