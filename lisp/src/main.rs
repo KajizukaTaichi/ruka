@@ -9,7 +9,7 @@ use std::{fs::File, io::Write};
 
 fn main() {
     println!("Hello, world!");
-    run("(var x 10) (+ x 2)").map(|x| println!(" = {x}"));
+    run("(var x 10) (var y (- x 7)) (+ x (* 2 y) 8)").map(|x| println!(" = {x}"));
 }
 
 fn run(source: &str) -> Option<f64> {
