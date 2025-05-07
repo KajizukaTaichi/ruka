@@ -13,7 +13,7 @@ impl Expr {
                             for expr in $list.iter().skip(2) {
                                 result.push_str("\tpsh ar\n");
                                 result.push_str(&expr.compile()?);
-                                result.push_str("\rmov dr, ar\n\tpop ar\n");
+                                result.push_str("\tmov dr, ar\n\tpop ar\n");
                                 result.push_str(&format!("\t{} ar, dr\n", $name));
                             }
                             result
