@@ -4,10 +4,9 @@ mod oper;
 mod stmt;
 mod util;
 
-use std::{fs::File, io::Write};
-
 use indexmap::IndexMap;
 use ruka_vm::{BasedMode, RukaVM, asm};
+use std::{fs::File, io::Write};
 use util::{OPERATOR, SPACE, include_letter};
 use {expr::Expr, lexer::tokenize, oper::Oper, stmt::Stmt};
 
