@@ -5,6 +5,7 @@ mod parse;
 use indexmap::IndexMap;
 use lexer::tokenize;
 use ruka_vm::{BasedMode, RukaVM, asm};
+use std::{fs::File, io::Write};
 
 fn main() {
     println!("Hello, world!");
@@ -19,7 +20,10 @@ fn run(source: &str) -> Option<f64> {
         .collect::<Option<Vec<_>>>()?;
     let code = format!("{}\thlt\n", code.concat());
 
-    println!("{code}");
+    File::create("./lisp/output.asm")
+        .unwrap()
+        .write_all(code.as_bytes())
+        .unwrap();
 
     let mut vm = RukaVM::new(asm(&code)?);
     vm.start()?;
