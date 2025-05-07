@@ -1,33 +1,21 @@
-	mov ar, 10
-	sta 0, ar
-	lda ar, 0
+	jmp 1, end_inc
+function_inc:
+	pop ar
+	sta 0, ar	; n
+	lda ar, 0; n
 	psh ar
-	mov ar, 7
+	mov ar, 1
 	mov dr, ar
 	pop ar
-	neg dr
 	add ar, dr
-	sta 1, ar
-	lda ar, 0
-	psh ar
+	ret
+end_inc:
 	mov ar, 2
 	psh ar
-	lda ar, 1
+	mov ar, 3
 	mov dr, ar
 	pop ar
 	mul ar, dr
-	mov dr, ar
-	pop ar
-	add ar, dr
-	psh ar
-	mov ar, 8
-	psh ar
-	lda ar, 0
-	mov dr, ar
-	pop ar
-	neg dr
-	add ar, dr
-	mov dr, ar
-	pop ar
-	add ar, dr
+
+psh ar		cal function_inc
 	hlt
