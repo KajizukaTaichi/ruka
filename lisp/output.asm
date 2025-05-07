@@ -16,6 +16,6 @@ end_inc:
 	mov dr, ar
 	pop ar
 	mul ar, dr
-
-psh ar		cal function_inc
+	psh ar
+	cal function_inc
 	hlt
