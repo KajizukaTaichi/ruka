@@ -1,2 +1,3 @@
 (fn inc (n) (+ 1 n))
-(inc (* 2 3))
+(fn sub (a b) (- a b))
+(sub (inc (* 2 3)) 6)
