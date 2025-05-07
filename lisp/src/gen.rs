@@ -71,7 +71,7 @@ impl Expr {
                             "{}\tcal function_{name}\n",
                             list.iter()
                                 .skip(1)
-                                .map(|x| x.compile(env).map(|x| format!("{x}\npsh ar\t")))
+                                .map(|x| x.compile(env).map(|x| format!("{x}\tpsh ar\n")))
                                 .collect::<Option<Vec<String>>>()?
                                 .concat()
                         ),
