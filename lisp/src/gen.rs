@@ -22,8 +22,8 @@ impl Expr {
                     match symbol.as_str() {
                         "+" => multi_args!("add" => list),
                         "*" => multi_args!("mul" => list),
-                        "-" => multi_args!("neg dr\nadd" => list),
-                        "/" => multi_args!("inv dr\nmul" => list),
+                        "-" => multi_args!("neg dr\n\tadd" => list),
+                        "/" => multi_args!("inv dr\n\tmul" => list),
                         _ => return None,
                     }
                 }
