@@ -26,7 +26,7 @@ impl Expr {
                         "*" => multi_args!("mul" => list),
                         "-" => multi_args!("neg dr\n\tadd" => list),
                         "/" => multi_args!("inv dr\n\tmul" => list),
-                        _ => return None,
+                        name => format!("\tcal function_{name}\n"),
                     }
                 }
                 _ => return None,
