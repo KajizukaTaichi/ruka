@@ -13,7 +13,8 @@ impl Expr {
                             for expr in $list.iter().skip(2) {
                                 result.push_str("\tpsh ar\n");
                                 result.push_str(&expr.compile()?);
-                                result.push_str(&format!("\tpop dr\n\t{} ar, dr\n", $name));
+                                result.push_str("\rmov dr, ar\n\tpop ar\n");
+                                result.push_str(&format!("\t{} ar, dr\n", $name));
                             }
                             result
                         }};
@@ -21,8 +22,8 @@ impl Expr {
                     match symbol.as_str() {
                         "+" => multi_args!("add" => list),
                         "*" => multi_args!("mul" => list),
-                        "-" => multi_args!("neg, dr\nadd" => list),
-                        "/" => multi_args!("inv, dr\nmul" => list),
+                        "-" => multi_args!("neg dr\nadd" => list),
+                        "/" => multi_args!("inv dr\nmul" => list),
                         _ => return None,
                     }
                 }
