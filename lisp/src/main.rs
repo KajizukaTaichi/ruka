@@ -21,11 +21,7 @@ fn run(source: &str) -> Option<f64> {
     let code = format!(
         "{}\thlt\n{}",
         code.last()?,
-        code.iter()
-            .skip(1)
-            .cloned()
-            .collect::<Vec<_>>()
-            .join("\n\n")
+        code.get(..code.len() - 1)?.join("\n\n")
     );
 
     println!("{code}");
