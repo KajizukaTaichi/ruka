@@ -27,6 +27,21 @@ impl Expr {
                         "*" => multi_args!("mul" => list),
                         "-" => multi_args!("neg dr\n\tadd" => list),
                         "/" => multi_args!("inv dr\n\tmul" => list),
+                        "var" => {
+                            let Expr::Symbol(name) = list.get(1)? else {
+                                return None;
+                            };
+                            let addr = env.get(name).unwrap_or(&env.len()).clone();
+                            let body = list.get(2)?.compile(env)?;
+                            format!("{body}\tsta {addr}, ar\n")
+                        }
+                        "fn" => {
+                            let Expr::Symbol(name) = list.get(1)? else {
+                                return None;
+                            };
+                            let body = list.get(2)?.compile(env)?;
+                            format!("function_{name}:\n{body}\tret\n")
+                        }
                         name => format!("\tcal function_{name}\n"),
                     }
                 }
