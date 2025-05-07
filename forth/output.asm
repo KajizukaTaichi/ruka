@@ -1,6 +1,6 @@
 	cal word_main
 	hlt
-word_dup:
+word_twice:
 	psh 2
 	pop dr
 	pop ar
@@ -17,8 +17,8 @@ word_half:
 	ret
 word_main:
 	psh 5
-	cal word_dup
-	cal word_dup
+	cal word_twice
+	cal word_twice
 	cal word_half
 	psh 10
 	pop dr
