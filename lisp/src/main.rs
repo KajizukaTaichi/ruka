@@ -8,7 +8,7 @@ use ruka_vm::{BasedMode, RukaVM, asm};
 
 fn main() {
     println!("Hello, world!");
-    run("(* 2 (- 10 5) ) (+ 1 2 3))").map(|x| println!(" = {x}"));
+    run("(* 2 (- 10 5) (+ 1 2 3))").map(|x| println!(" = {x}"));
 }
 
 fn run(source: &str) -> Option<f64> {
