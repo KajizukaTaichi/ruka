@@ -12,9 +12,21 @@ fn main() {
 }
 
 fn run(source: &str) -> Option<f64> {
-    let ast = Expr::parse(source)?;
-    let code = ast.compile(&mut IndexMap::new())?;
-    let code = code + "\thlt\n";
+    let env = &mut IndexMap::new();
+    let code = tokenize(source)?
+        .iter()
+        .map(|code| Expr::parse(&code).map(|ast| ast.compile(env)))
+        .flatten()
+        .collect::<Option<Vec<_>>>()?;
+    let code = format!(
+        "{}\thlt\n{}",
+        code.last()?,
+        code.iter()
+            .skip(1)
+            .cloned()
+            .collect::<Vec<_>>()
+            .join("\n\n")
+    );
 
     println!("{code}");
 
