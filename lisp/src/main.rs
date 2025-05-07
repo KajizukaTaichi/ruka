@@ -3,7 +3,6 @@ mod lexer;
 mod parse;
 
 use lexer::tokenize;
-
 use ruka_vm::{BasedMode, RukaVM, asm};
 
 fn main() {
