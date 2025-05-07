@@ -2,9 +2,9 @@
 function_inc:
 	pop ar
 	sta 0, ar	; n
-	lda ar, 0; n
-	psh ar
 	mov ar, 1
+	psh ar
+	lda ar, 0	; n
 	mov dr, ar
 	pop ar
 	add ar, dr
