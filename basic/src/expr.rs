@@ -46,7 +46,7 @@ impl Expr {
         Some(match self {
             Expr::Oper(oper) => oper.compile(ctx)?,
             Expr::Value(number) => number.to_string(),
-            Expr::Refer(to) => format!("\tlda ar, {}\n", ctx.variables.get(to)?),
+            Expr::Refer(to) => format!("\tlda ar, {}\t; {to}\n", ctx.variables.get(to)?),
             Expr::Call(name, args) => format!(
                 "{}\tcal subroutine_{name}\n\tpop ar\n",
                 args.iter()
