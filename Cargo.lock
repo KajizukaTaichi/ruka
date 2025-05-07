@@ -229,6 +229,7 @@ dependencies = [
 name = "ruka-lisp"
 version = "0.1.0"
 dependencies = [
+ "indexmap",
  "ruka-vm",
 ]
 
