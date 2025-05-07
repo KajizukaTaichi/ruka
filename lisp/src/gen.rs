@@ -40,8 +40,10 @@ impl Expr {
                             let Expr::Symbol(name) = list.get(1)? else {
                                 return None;
                             };
-                            let body = list.get(2)?.compile(env)?;
-                            format!("function_{name}:\n{body}\tret\n")
+                            format!(
+                                "\tjmp 1, end_{name}\nfunction_{name}:\n{body}\tret\nend_{name}:\n",
+                                body = list.get(2)?.compile(env)?
+                            )
                         }
                         name => format!("\tcal function_{name}\n"),
                     }
