@@ -10,7 +10,7 @@ impl Expr {
                         ($name: expr => $list: expr) => {{
                             let mut result = String::new();
                             result.push_str(&$list.get(1)?.compile()?);
-                            for expr in $list.iter().skip(1) {
+                            for expr in $list.iter().skip(2) {
                                 result.push_str("\tpsh ar\n");
                                 result.push_str(&expr.compile()?);
                                 result.push_str(&format!("\tpop dr\n\t{} ar, dr\n", $name));
