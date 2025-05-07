@@ -21,7 +21,9 @@ fn run(source: &str) -> Option<f64> {
     let code = format!(
         "{}\thlt\n{}",
         code.last()?,
-        code.get(..code.len() - 1)?.join("\n\n")
+        code.get(..code.len() - 1)
+            .map(|x| x.join("\n\n"))
+            .unwrap_or(String::new())
     );
 
     println!("{code}");
