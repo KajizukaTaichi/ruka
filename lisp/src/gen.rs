@@ -6,7 +6,7 @@ impl Expr {
     pub fn compile(&self, env: &mut Env) -> Option<String> {
         Some(match self {
             Expr::Value(literal) => format!("\tmov ar, {literal}\n"),
-            Expr::Symbol(name) => format!("lda ar, {}", env.get(name)?),
+            Expr::Symbol(name) => format!("\tlda ar, {}\n", env.get(name)?),
             Expr::List(list) => match list.first()? {
                 Expr::Symbol(symbol) => {
                     macro_rules! multi_args {
@@ -33,6 +33,7 @@ impl Expr {
                             };
                             let addr = env.get(name).unwrap_or(&env.len()).clone();
                             let body = list.get(2)?.compile(env)?;
+                            env.insert(name.to_string(), addr);
                             format!("{body}\tsta {addr}, ar\n")
                         }
                         "fn" => {
