@@ -25,3 +25,6 @@ cargo run --bin ruka-basic
 ```
 cargo run --bin ruka-forth
 ```
+```
+cargo run --bin ruka-lisp
+```
