@@ -2,6 +2,7 @@ mod r#gen;
 mod lexer;
 mod parse;
 
+use indexmap::IndexMap;
 use lexer::tokenize;
 use ruka_vm::{BasedMode, RukaVM, asm};
 
@@ -12,7 +13,7 @@ fn main() {
 
 fn run(source: &str) -> Option<f64> {
     let ast = Expr::parse(source)?;
-    let code = ast.compile()?;
+    let code = ast.compile(&mut IndexMap::new())?;
     let code = code + "\thlt\n";
 
     println!("{code}");
