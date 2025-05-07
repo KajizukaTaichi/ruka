@@ -45,6 +45,7 @@ impl Expr {
                             };
                             let args = args
                                 .iter()
+                                .rev()
                                 .map(|x| {
                                     if let Expr::Symbol(name) = x {
                                         Some(name.to_owned())
@@ -66,7 +67,14 @@ impl Expr {
                                 args = args.concat()
                             )
                         }
-                        name => format!("\tcal function_{name}\n"),
+                        name => format!(
+                            "{}\tcal function_{name}\n",
+                            list.iter()
+                                .skip(1)
+                                .map(|x| x.compile(env).map(|x| format!("\npsh {x}\t")))
+                                .collect::<Option<Vec<String>>>()?
+                                .concat()
+                        ),
                     }
                 }
                 _ => return None,
