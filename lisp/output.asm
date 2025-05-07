@@ -21,6 +21,12 @@
 	add ar, dr
 	psh ar
 	mov ar, 8
+	psh ar
+	lda ar, 0
+	mov dr, ar
+	pop ar
+	neg dr
+	add ar, dr
 	mov dr, ar
 	pop ar
 	add ar, dr
