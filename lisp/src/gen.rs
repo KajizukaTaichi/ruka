@@ -47,7 +47,6 @@ impl Expr {
                 }
                 _ => return None,
             },
-            _ => return None,
         })
     }
 }
