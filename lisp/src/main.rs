@@ -16,6 +16,8 @@ fn run(source: &str) -> Option<f64> {
     let code = ast.compile()?;
     let code = code + "\thlt\n";
 
+    println!("{code}");
+
     let mut vm = RukaVM::new(asm(&code)?);
     vm.start()?;
 
