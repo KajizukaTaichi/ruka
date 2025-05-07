@@ -19,7 +19,7 @@ line_0:
 	sta 0, ar	; bit
 
 line_1:
-	lda ar, 0
+	lda ar, 0	; bit
 	psh ar
 	mov ar, 8
 	psh ar
@@ -53,9 +53,9 @@ line_6:
 
 line_7:
 while_start_0:
-	lda ar, 5
+	lda ar, 5	; i
 	psh ar
-	lda ar, 2
+	lda ar, 2	; y
 	mov dr, ar
 	pop ar
 	les ar, dr
@@ -64,7 +64,7 @@ while_start_0:
 	jmp cr, while_end_0
 
 line_8:
-	lda ar, 5
+	lda ar, 5	; i
 	psh ar
 	mov ar, 1
 	mov dr, ar
@@ -73,9 +73,9 @@ line_8:
 	sta 5, ar	; i
 
 line_9:
-	lda ar, 4
+	lda ar, 4	; n
 	psh ar
-	lda ar, 3
+	lda ar, 3	; x
 	mov dr, ar
 	pop ar
 	mul ar, dr
@@ -86,7 +86,7 @@ line_10:
 while_end_0:
 
 line_11:
-	lda ar, 4
+	lda ar, 4	; n
 	psh ar
 	ret
 
