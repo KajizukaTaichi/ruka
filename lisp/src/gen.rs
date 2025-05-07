@@ -40,9 +40,30 @@ impl Expr {
                             let Expr::Symbol(name) = list.get(1)? else {
                                 return None;
                             };
+                            let Expr::List(args) = list.get(2)? else {
+                                return None;
+                            };
+                            let args = args
+                                .iter()
+                                .map(|x| {
+                                    if let Expr::Symbol(name) = x {
+                                        Some(name.to_owned())
+                                    } else {
+                                        None
+                                    }
+                                })
+                                .collect::<Option<Vec<String>>>()?
+                                .iter()
+                                .map(|arg| {
+                                    let addr = env.len();
+                                    env.insert(arg.to_string(), addr);
+                                    format!("\tpop ar\n\tsta {addr}, ar\t; {arg}\n")
+                                })
+                                .collect::<Vec<String>>();
                             format!(
-                                "\tjmp 1, end_{name}\nfunction_{name}:\n{body}\tret\nend_{name}:\n",
-                                body = list.get(2)?.compile(env)?
+                                "\tjmp 1, end_{name}\nfunction_{name}:\n{args}{body}\tret\nend_{name}:\n",
+                                body = list.get(2)?.compile(env)?,
+                                args = args.concat()
                             )
                         }
                         name => format!("\tcal function_{name}\n"),
