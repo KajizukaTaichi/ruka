@@ -1,4 +1,4 @@
-let a = 6
+let a = 10
 if a > 5
     if a = 10
         let a = 666
