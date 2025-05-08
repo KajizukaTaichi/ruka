@@ -42,18 +42,15 @@ impl Stmt {
                     expr = cond!(expr),
                 )
             }
-            Stmt::While(expr) => {
+            Stmt::While(expr, block) => {
                 let expr = expr.compile(ctx)?;
-                let result = format!(
-                    "while_start_{label}:\n{expr}\tnor cr, cr\n\tjmp cr, while_end_{label}\n",
-                    expr = cond!(expr),
-                    label = ctx.while_label_index
-                );
+                let block = block.compile(ctx)?;
+                let label = ctx.while_label_index;
                 ctx.while_label_index += 1;
-                result
-            }
-            Stmt::Goto(line) => {
-                format!("\tjmp 1, line_{line}\n")
+                format!(
+                    "while_start_{label}:\n{expr}\tnor cr, cr\n\tjmp cr, while_end_{label}\n{block}while_end_{label}:",
+                    expr = cond!(expr),
+                )
             }
             Stmt::Sub(name, args) => {
                 let mut args = args.clone();
