@@ -38,7 +38,7 @@ impl Stmt {
                 let label = ctx.if_label_index;
                 ctx.if_label_index += 1;
                 format!(
-                    "{expr}\tjmp cr, if_then_{label}\n\tjmp 1, if_else_{label}\nif_then_{label}:\n{then}\tjmp 1, if_end_{label}\n{then}if_else_{label}:\n{els}if_end_{label}:\n",
+                    "{expr}\tjmp cr, if_then_{label}\n\tjmp 1, if_else_{label}\nif_then_{label}:\n{then}\tjmp 1, if_end_{label}\nif_else_{label}:\n{els}if_end_{label}:\n",
                     expr = cond!(expr),
                 )
             }
