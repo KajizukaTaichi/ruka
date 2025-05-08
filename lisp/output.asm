@@ -32,9 +32,19 @@ end_sub:
 	pop ar
 	mul ar, dr
 	psh ar
+	mov ar, 0.5
+	mov dr, ar
+	pop ar
+	inv dr
+	mul ar, dr
+	sta 3, ar	; x
+	lda ar, 3	; x
+	psh ar
 	cal function_inc
 	psh ar
-	mov ar, 6
+	cal function_inc
+	psh ar
+	lda ar, 3	; x
 	psh ar
 	cal function_sub
 	hlt
