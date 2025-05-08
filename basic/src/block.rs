@@ -30,14 +30,13 @@ impl Block {
                 } else if let Some(line) = line.strip_prefix("sub") {
                     let (name, args) = line.trim_end_matches(')').split_once('(')?;
                     let args = args.split(',').map(|s| s.trim().to_string()).collect();
-                    Some(Stmt::Sub(name.trim().to_string(), args));
+                    result.push(Stmt::Sub(name.trim().to_string(), args));
                 } else if line == "end sub" {
-                    Some(Stmt::EndSub);
+                    result.push(Stmt::EndSub);
                 } else if line == "exit program" {
-                    Some(Stmt::ExitProgram);
+                    result.push(Stmt::ExitProgram);
                 } else if let Some(line) = line.strip_prefix("return") {
-                    temp = Some(Stmt::Return(Expr::parse(&line)?));
-                    nest += 1
+                    result.push(Stmt::Return(Expr::parse(&line)?));
                 }
             } else {
                 if line == "end if" {
