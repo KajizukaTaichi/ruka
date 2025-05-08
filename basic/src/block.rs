@@ -70,16 +70,16 @@ impl Block {
                             }
                             _ => return None,
                         }
+                    }
+                } else {
+                    if line.starts_with("if") {
+                        block += &format!("{line}\n");
+                        nest += 1;
+                    } else if line.starts_with("while") {
+                        block += &format!("{line}\n");
+                        nest += 1;
                     } else {
-                        if line.starts_with("if") {
-                            block += &format!("{line}\n");
-                            nest += 1;
-                        } else if line.starts_with("while") {
-                            block += &format!("{line}\n");
-                            nest += 1;
-                        } else {
-                            block += &format!("{line}\n");
-                        }
+                        block += &format!("{line}\n");
                     }
                 }
             }
