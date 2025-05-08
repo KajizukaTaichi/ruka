@@ -53,12 +53,12 @@ while_start_1:
 	pop ar
 	add ar, dr
 	sta 5, ar	; index
-	lda ar, 5	; index
-	psh ar
 	lda ar, 2	; exponent
+	psh ar
+	lda ar, 5	; index
 	mov dr, ar
 	pop ar
-	eql ar, dr
+	les ar, dr
 	mov cr, ar
 	jmp cr, if_then_0
 	jmp 1, if_else_0
