@@ -48,7 +48,7 @@ impl Stmt {
                 let label = ctx.while_label_index;
                 ctx.while_label_index += 1;
                 format!(
-                    "while_start_{label}:\n{expr}\tnor cr, cr\n\tjmp cr, while_end_{label}\n{block}jmp 1, while_start_{label}\nwhile_end_{label}:",
+                    "while_start_{label}:\n{expr}\tnor cr, cr\n\tjmp cr, while_end_{label}\n{block}\tjmp 1, while_start_{label}\nwhile_end_{label}:",
                     expr = cond!(expr),
                 )
             }
