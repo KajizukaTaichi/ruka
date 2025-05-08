@@ -17,6 +17,7 @@ fn main() {
     compiler.run(code).map(|x| println!(" = {x}"));
 }
 
+#[derive(Debug)]
 struct Compiler {
     if_label_index: usize,
     while_label_index: usize,
