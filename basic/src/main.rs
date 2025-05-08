@@ -43,7 +43,7 @@ impl Compiler {
         let bytecodes = asm(assembly)?;
         let mut vm = RukaVM::new(bytecodes);
 
-        vm.start()?;
+        //vm.start()?;
         Some(vm.returns(BasedMode::Register)?)
     }
 
