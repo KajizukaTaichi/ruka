@@ -41,11 +41,11 @@ subroutine_pow:
 	sta 5, ar	; index
 	mov ar, 1
 	sta 6, ar	; flag
-while_start_0:
+while_start_1:
 	lda ar, 6	; flag
 	mov cr, ar
 	nor cr, cr
-	jmp cr, while_end_0
+	jmp cr, while_end_1
 	lda ar, 5	; index
 	psh ar
 	lda ar, 2	; exponent
@@ -75,8 +75,8 @@ if_else_0:
 	mul ar, dr
 	sta 4, ar	; number
 if_end_0:
-	jmp 1, while_start_0
-while_end_0:
+	jmp 1, while_start_1
+while_end_1:
 	lda ar, 4	; number
 	psh ar
 	ret
