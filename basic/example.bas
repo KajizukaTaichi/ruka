@@ -8,7 +8,7 @@ Sub pow(base, exponent)
     Let flag = true
     While flag
         Let index = index + 1
-        If index = exponent
+        If index > exponent
             Let flag = false
         Else
             Let number = number * base
