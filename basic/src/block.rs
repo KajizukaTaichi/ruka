@@ -40,7 +40,6 @@ impl Block {
                     nest += 1
                 }
             } else {
-                dbg!(&block, &temp);
                 if line == "end if" {
                     if nest == 1 {
                         match temp.clone()? {
