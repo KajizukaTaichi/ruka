@@ -40,7 +40,7 @@ impl Block {
                     nest += 1
                 }
             } else {
-                if line == "end".to_string() {
+                if line == "end if".to_string() {
                     if nest == 1 {
                         match temp.clone()? {
                             Stmt::If(expr, true_code, _) => {
@@ -51,11 +51,19 @@ impl Block {
                                 });
                                 block.clear();
                             }
-                            Stmt::While(expr, _) => {
-                                result.push(Stmt::While(expr, Block::parse(block.clone())?));
-                                block.clear();
-                            }
                             _ => {}
+                        }
+                        if line == "end while".to_string() {
+                            if nest == 1 {
+                                match temp.clone()? {
+                                    Stmt::While(expr, _) => {
+                                        result
+                                            .push(Stmt::While(expr, Block::parse(block.clone())?));
+                                        block.clear();
+                                    }
+                                    _ => {}
+                                }
+                            }
                         }
                     } else {
                         block += &format!("{line}\n");
