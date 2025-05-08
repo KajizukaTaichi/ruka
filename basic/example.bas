@@ -7,10 +7,10 @@ Sub pow(base, exponent)
     Let index = 0
     Let flag = true
     While flag
+        Let index = index + 1
         If index = exponent
             Let flag = false
         Else
-            Let index = index + 1
             Let number = number * base
         End If
     End While
