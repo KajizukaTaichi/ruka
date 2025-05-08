@@ -53,16 +53,14 @@ impl Block {
                             }
                             _ => {}
                         }
-                        if line == "end while".to_string() {
-                            if nest == 1 {
-                                match temp.clone()? {
-                                    Stmt::While(expr, _) => {
-                                        result
-                                            .push(Stmt::While(expr, Block::parse(block.clone())?));
-                                        block.clear();
-                                    }
-                                    _ => {}
+                    } else if line == "end while".to_string() {
+                        if nest == 1 {
+                            match temp.clone()? {
+                                Stmt::While(expr, _) => {
+                                    result.push(Stmt::While(expr, Block::parse(block.clone())?));
+                                    block.clear();
                                 }
+                                _ => {}
                             }
                         }
                     } else {
