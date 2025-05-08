@@ -3,13 +3,8 @@ use crate::*;
 #[derive(Debug, Clone)]
 pub enum Stmt {
     Let(String, Expr),
-    If(Expr),
-    Else,
-    EndIf,
-    While(Expr),
-    EndWhile,
-    ExitWhile,
-    Goto(String),
+    If(Expr, Block, Option<Block>),
+    While(Expr, Block),
     Sub(String, Vec<String>),
     Return(Expr),
     EndSub,
@@ -17,40 +12,6 @@ pub enum Stmt {
 }
 
 impl Stmt {
-    pub fn parse(source: &str) -> Option<Stmt> {
-        let source = source.trim();
-        if let Some(line) = source.strip_prefix("goto") {
-            Some(Stmt::Goto(line.trim().to_string()))
-        } else if let Some(name) = source.strip_prefix("sub") {
-            let (name, args) = name.trim_end_matches(')').split_once('(')?;
-            let args = args.split(',').map(|s| s.trim().to_string()).collect();
-            Some(Stmt::Sub(name.trim().to_string(), args))
-        } else if let Some(code) = source.strip_prefix("if") {
-            Some(Stmt::If(Expr::parse(code)?))
-        } else if let Some(code) = source.strip_prefix("let") {
-            let (name, code) = code.split_once("=")?;
-            Some(Stmt::Let(name.trim().to_string(), Expr::parse(code)?))
-        } else if source == "exit program" {
-            Some(Stmt::ExitProgram)
-        } else if source == "exit while" {
-            Some(Stmt::ExitWhile)
-        } else if let Some(name) = source.strip_prefix("while") {
-            Some(Stmt::While(Expr::parse(name)?))
-        } else if let Some(name) = source.strip_prefix("return") {
-            Some(Stmt::Return(Expr::parse(name)?))
-        } else if source == "end while" {
-            Some(Stmt::EndWhile)
-        } else if source == "end sub" || source == "exit sub" {
-            Some(Stmt::EndSub)
-        } else if source == "else" {
-            Some(Stmt::Else)
-        } else if source == "end if" {
-            Some(Stmt::EndIf)
-        } else {
-            None
-        }
-    }
-
     pub fn compile(&self, ctx: &mut Compiler) -> Option<String> {
         Some(match self {
             Stmt::Let(name, expr) => {
@@ -60,25 +21,26 @@ impl Stmt {
                 let expr = expr.compile(ctx)?;
                 format!("{}\tsta {addr}, ar\t; {name}\n", expr!(expr))
             }
-            Stmt::If(expr) => {
+            Stmt::If(expr, then, None) => {
                 let expr = expr.compile(ctx)?;
-                let result = format!(
-                    "{expr}\tjmp cr, if_then_{label}\n\tjmp 1, if_else_{label}\n\tjmp 1, if_end_{label}\nif_then_{label}:\n",
-                    expr = cond!(expr),
-                    label = ctx.if_label_index
-                );
+                let then = then.compile(ctx)?;
+                let label = ctx.if_label_index;
                 ctx.if_label_index += 1;
-                result
-            }
-            Stmt::Else => {
                 format!(
-                    "\tjmp 1, if_end_{label}\nif_else_{label}:\n",
-                    label = ctx.if_label_index - 1
+                    "{expr}\tjmp cr, if_then_{label}\n\tjmp 1, if_end_{label}\nif_then_{label}:\n{then}if_end_{label}:",
+                    expr = cond!(expr),
                 )
             }
-            Stmt::EndIf => {
-                ctx.if_label_index -= 1;
-                format!("if_end_{}:\n", ctx.if_label_index)
+            Stmt::If(expr, then, Some(els)) => {
+                let expr = expr.compile(ctx)?;
+                let then = then.compile(ctx)?;
+                let els = els.compile(ctx)?;
+                let label = ctx.if_label_index;
+                ctx.if_label_index += 1;
+                format!(
+                    "{expr}\tjmp cr, if_then_{label}\n\tjmp 1, if_else_{label}\nif_then_{label}:\n{then}\tjmp 1, if_end_{label}\nif_end_{label}:{then}if_else_{label}:\n{els}if_end_{label}:",
+                    expr = cond!(expr),
+                )
             }
             Stmt::While(expr) => {
                 let expr = expr.compile(ctx)?;
@@ -89,18 +51,6 @@ impl Stmt {
                 );
                 ctx.while_label_index += 1;
                 result
-            }
-            Stmt::EndWhile => {
-                format!(
-                    "\tjmp 1, while_start_{label}\nwhile_end_{label}:\n",
-                    label = ctx.while_label_index - 1
-                )
-            }
-            Stmt::ExitWhile => {
-                format!(
-                    "\tjmp 1, while_end_{label}\n",
-                    label = ctx.while_label_index - 1
-                )
             }
             Stmt::Goto(line) => {
                 format!("\tjmp 1, line_{line}\n")
