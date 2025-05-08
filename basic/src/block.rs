@@ -27,6 +27,17 @@ impl Block {
                 } else if let Some(line) = source.strip_prefix("while") {
                     temp = Some(Stmt::While(Expr::parse(&line)?, Block(vec![])));
                     nest += 1
+                } else if let Some(line) = source.strip_prefix("sub") {
+                    let (name, args) = line.trim_end_matches(')').split_once('(')?;
+                    let args = args.split(',').map(|s| s.trim().to_string()).collect();
+                    Some(Stmt::Sub(name.trim().to_string(), args));
+                } else if line == "end sub" {
+                    Some(Stmt::EndSub);
+                } else if line == "exit program" {
+                    Some(Stmt::ExitProgram);
+                } else if let Some(line) = source.strip_prefix("return") {
+                    temp = Some(Stmt::Return(Expr::parse(&line)?));
+                    nest += 1
                 }
             } else {
                 if line == "end".to_string() {
