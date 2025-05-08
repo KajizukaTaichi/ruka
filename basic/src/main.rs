@@ -1,3 +1,4 @@
+mod block;
 mod expr;
 mod lexer;
 mod oper;
@@ -8,10 +9,11 @@ use indexmap::IndexMap;
 use ruka_vm::{BasedMode, RukaVM, asm};
 use std::{fs::File, io::Write};
 use util::{OPERATOR, SPACE, include_letter};
-use {expr::Expr, lexer::tokenize, oper::Oper, stmt::Stmt};
+use {block::Block, expr::Expr, lexer::tokenize, oper::Oper, stmt::Stmt};
 
 fn main() {
     let mut compiler = Compiler {
+        line_number: 0,
         if_label_index: 0,
         while_label_index: 0,
         variables: IndexMap::new(),
@@ -21,6 +23,7 @@ fn main() {
 }
 
 struct Compiler {
+    line_number: usize,
     if_label_index: usize,
     while_label_index: usize,
     variables: IndexMap<String, usize>,
