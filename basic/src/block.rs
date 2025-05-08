@@ -51,17 +51,17 @@ impl Block {
                                 });
                                 block.clear();
                             }
-                            _ => {}
+                            _ => return None,
                         }
-                    } else if line == "end while".to_string() {
-                        if nest == 1 {
-                            match temp.clone()? {
-                                Stmt::While(expr, _) => {
-                                    result.push(Stmt::While(expr, Block::parse(block.clone())?));
-                                    block.clear();
-                                }
-                                _ => {}
+                    }
+                } else if line == "end while".to_string() {
+                    if nest == 1 {
+                        match temp.clone()? {
+                            Stmt::While(expr, _) => {
+                                result.push(Stmt::While(expr, Block::parse(block.clone())?));
+                                block.clear();
                             }
+                            _ => return None,
                         }
                     } else {
                         block += &format!("{line}\n");
@@ -70,26 +70,22 @@ impl Block {
                 } else if line == "else".to_string() {
                     if nest == 1 {
                         match temp.clone()? {
-                            Stmt::If(expr, _, _) => {
-                                if is_else {
-                                    return None;
-                                } else {
-                                    temp = Some(Stmt::If(expr, Block::parse(block.clone())?, None));
-                                    block.clear();
-                                }
+                            Stmt::If(expr, _, _) if !is_else => {
+                                temp = Some(Stmt::If(expr, Block::parse(block.clone())?, None));
+                                block.clear();
                                 is_else = true;
                             }
-                            _ => {}
+                            _ => return None,
                         }
                     } else {
                         block += &format!("{line}\n");
                     }
                 } else if line.starts_with("if") {
-                    nest += 1;
                     block += &format!("{line}\n");
+                    nest += 1;
                 } else if line.starts_with("while") {
-                    nest += 1;
                     block += &format!("{line}\n");
+                    nest += 1;
                 } else {
                     block += &format!("{line}\n");
                 }
