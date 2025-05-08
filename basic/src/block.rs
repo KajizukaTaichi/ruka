@@ -7,27 +7,28 @@ impl Block {
     pub fn parse(source: String) -> Option<Block> {
         let mut result = vec![];
         let mut block: String = String::new();
-        let mut nest = 0;
         let mut temp: Option<Stmt> = None;
+        let mut nest = 0;
         let mut is_else = false;
 
         for line in source.lines() {
-            let line = line.trim().to_string();
+            let line = line.trim();
             if line.is_empty() {
                 continue;
             }
+            dbg!(&line);
 
             if nest == 0 {
-                if let Some(line) = source.strip_prefix("let") {
+                if let Some(line) = line.strip_prefix("let") {
                     let (name, value) = line.split_once("=")?;
                     result.push(Stmt::Let(name.trim().to_string(), Expr::parse(value)?));
-                } else if let Some(line) = source.strip_prefix("if") {
+                } else if let Some(line) = line.strip_prefix("if") {
                     temp = Some(Stmt::If(Expr::parse(&line)?, Block(vec![]), None));
                     nest += 1
-                } else if let Some(line) = source.strip_prefix("while") {
+                } else if let Some(line) = line.strip_prefix("while") {
                     temp = Some(Stmt::While(Expr::parse(&line)?, Block(vec![])));
                     nest += 1
-                } else if let Some(line) = source.strip_prefix("sub") {
+                } else if let Some(line) = line.strip_prefix("sub") {
                     let (name, args) = line.trim_end_matches(')').split_once('(')?;
                     let args = args.split(',').map(|s| s.trim().to_string()).collect();
                     Some(Stmt::Sub(name.trim().to_string(), args));
@@ -35,12 +36,12 @@ impl Block {
                     Some(Stmt::EndSub);
                 } else if line == "exit program" {
                     Some(Stmt::ExitProgram);
-                } else if let Some(line) = source.strip_prefix("return") {
+                } else if let Some(line) = line.strip_prefix("return") {
                     temp = Some(Stmt::Return(Expr::parse(&line)?));
                     nest += 1
                 }
             } else {
-                if line == "end if".to_string() {
+                if line == "end if" {
                     if nest == 1 {
                         match temp.clone()? {
                             Stmt::If(expr, true_code, _) => {
@@ -54,7 +55,7 @@ impl Block {
                             _ => return None,
                         }
                     }
-                } else if line == "end while".to_string() {
+                } else if line == "end while" {
                     if nest == 1 {
                         match temp.clone()? {
                             Stmt::While(expr, _) => {
@@ -67,7 +68,7 @@ impl Block {
                         block += &format!("{line}\n");
                     }
                     nest -= 1;
-                } else if line == "else".to_string() {
+                } else if line == "else" {
                     if nest == 1 {
                         match temp.clone()? {
                             Stmt::If(expr, _, _) if !is_else => {
