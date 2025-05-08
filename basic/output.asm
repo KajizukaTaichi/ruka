@@ -10,6 +10,12 @@
 	jmp cr, if_then_0
 	jmp 1, if_else_0
 if_then_0:
+	mov ar, 100
+	sta 0, ar	; a
 	jmp 1, if_end_0
+	mov ar, 100
+	sta 0, ar	; a
 if_else_0:
+	mov ar, 50
+	sta 0, ar	; a
 if_end_0:
