@@ -40,6 +40,7 @@ impl Block {
                     nest += 1
                 }
             } else {
+                dbg!(&block, &temp);
                 if line == "end if" {
                     if nest == 1 {
                         match temp.clone()? {
@@ -56,6 +57,7 @@ impl Block {
                     } else {
                         block += &format!("{line}\n");
                     }
+                    nest -= 1;
                 } else if line == "end while" {
                     if nest == 1 {
                         match temp.clone()? {
