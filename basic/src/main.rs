@@ -19,16 +19,14 @@ fn main() {
 
 #[derive(Debug)]
 struct Compiler {
-    if_label_index: usize,
-    while_label_index: usize,
+    label_index: usize,
     variables: IndexMap<String, usize>,
 }
 
 impl Compiler {
     fn new() -> Self {
         Compiler {
-            if_label_index: 0,
-            while_label_index: 0,
+            label_index: 0,
             variables: IndexMap::new(),
         }
     }
