@@ -39,8 +39,8 @@ impl Block {
                     result.push(Stmt::Return(Expr::parse(&line)?));
                 }
             } else {
-                if line == "end if" {
-                    if nest == 1 {
+                if nest == 1 {
+                    if line == "end if" {
                         match temp.clone()? {
                             Stmt::If(expr, true_code, _) => {
                                 result.push(if is_else {
@@ -52,9 +52,7 @@ impl Block {
                             }
                             _ => return None,
                         }
-                    }
-                } else if line == "end while" {
-                    if nest == 1 {
+                    } else if line == "end while" {
                         match temp.clone()? {
                             Stmt::While(expr, _) => {
                                 result.push(Stmt::While(expr, Block::parse(block.clone())?));
@@ -62,12 +60,8 @@ impl Block {
                             }
                             _ => return None,
                         }
-                    } else {
-                        block += &format!("{line}\n");
-                    }
-                    nest -= 1;
-                } else if line == "else" {
-                    if nest == 1 {
+                        nest -= 1;
+                    } else if line == "else" {
                         match temp.clone()? {
                             Stmt::If(expr, _, _) if !is_else => {
                                 temp = Some(Stmt::If(expr, Block::parse(block.clone())?, None));
@@ -77,16 +71,16 @@ impl Block {
                             _ => return None,
                         }
                     } else {
-                        block += &format!("{line}\n");
+                        if line.starts_with("if") {
+                            block += &format!("{line}\n");
+                            nest += 1;
+                        } else if line.starts_with("while") {
+                            block += &format!("{line}\n");
+                            nest += 1;
+                        } else {
+                            block += &format!("{line}\n");
+                        }
                     }
-                } else if line.starts_with("if") {
-                    block += &format!("{line}\n");
-                    nest += 1;
-                } else if line.starts_with("while") {
-                    block += &format!("{line}\n");
-                    nest += 1;
-                } else {
-                    block += &format!("{line}\n");
                 }
             }
         }
