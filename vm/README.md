@@ -41,4 +41,4 @@
 |DR|Data Register|データの格納|
 |CR|Conditional Register|条件の格納|
 |BA|Base Address|メモリの基底アドレス|
-|SP|Stack Pointer|スタックに長さ|
+|SP|Stack Pointer|スタックの大きさ|
