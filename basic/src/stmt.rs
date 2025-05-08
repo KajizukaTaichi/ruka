@@ -53,11 +53,11 @@ impl Stmt {
                 )
             }
             Stmt::Sub(name, args) => {
-                let mut args = args.clone();
-                args.reverse();
+                let args = args.clone();
                 format!(
                     "subroutine_{name}:\n{}",
                     args.iter()
+                        .rev()
                         .map(|arg| {
                             let addr = ctx.variables.len();
                             ctx.variables.insert(arg.to_string(), addr);
