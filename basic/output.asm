@@ -1,4 +1,4 @@
-	mov ar, 6
+	mov ar, 10
 	sta 0, ar	; a
 	mov ar, 5
 	psh ar
