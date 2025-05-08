@@ -20,7 +20,7 @@ macro_rules! join {
 
 #[macro_export]
 macro_rules! ok {
-    ($x:expr) => {
+    ($x: expr) => {
         if let Ok(x) = $x { Some(x) } else { None }
     };
 }
