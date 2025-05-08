@@ -1,4 +1,3 @@
-line_0:
 	mov ar, 1
 	psh ar
 	mov ar, 2
@@ -17,8 +16,6 @@ line_0:
 	neg dr
 	add ar, dr
 	sta 0, ar	; bit
-
-line_1:
 	lda ar, 0	; bit
 	psh ar
 	mov ar, 8
@@ -32,26 +29,16 @@ line_1:
 	neg dr
 	add ar, dr
 	sta 1, ar	; max_1byte
-
-line_2:
 	hlt
-
-line_4:
 subroutine_pow:
 	pop ar
 	sta 2, ar	; y
 	pop ar
 	sta 3, ar	; x
-
-line_5:
 	mov ar, 1
 	sta 4, ar	; n
-
-line_6:
 	mov ar, 0
 	sta 5, ar	; i
-
-line_7:
 while_start_0:
 	lda ar, 5	; i
 	psh ar
@@ -62,8 +49,6 @@ while_start_0:
 	mov cr, ar
 	nor cr, cr
 	jmp cr, while_end_0
-
-line_8:
 	lda ar, 5	; i
 	psh ar
 	mov ar, 1
@@ -71,8 +56,6 @@ line_8:
 	pop ar
 	add ar, dr
 	sta 5, ar	; i
-
-line_9:
 	lda ar, 4	; n
 	psh ar
 	lda ar, 3	; x
@@ -80,16 +63,7 @@ line_9:
 	pop ar
 	mul ar, dr
 	sta 4, ar	; n
-
-line_10:
-	jmp 1, while_start_0
-while_end_0:
-
-line_11:
-	lda ar, 4	; n
+while_end_0:	lda ar, 4	; n
 	psh ar
 	ret
-
-line_12:
 	ret
-
