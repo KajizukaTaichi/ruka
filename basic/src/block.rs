@@ -53,6 +53,8 @@ impl Block {
                             }
                             _ => return None,
                         }
+                    } else {
+                        block += &format!("{line}\n");
                     }
                 } else if line == "end while" {
                     if nest == 1 {
