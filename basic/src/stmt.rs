@@ -24,8 +24,8 @@ impl Stmt {
             Stmt::If(expr, then, None) => {
                 let expr = expr.compile(ctx)?;
                 let then = then.compile(ctx)?;
-                let label = ctx.if_label_index;
-                ctx.if_label_index += 1;
+                let label = ctx.label_index;
+                ctx.label_index += 1;
                 format!(
                     "{expr}\tjmp cr, if_then_{label}\n\tjmp 1, if_end_{label}\nif_then_{label}:\n{then}if_end_{label}:\n",
                     expr = cond!(expr),
@@ -35,8 +35,8 @@ impl Stmt {
                 let expr = expr.compile(ctx)?;
                 let then = then.compile(ctx)?;
                 let els = els.compile(ctx)?;
-                let label = ctx.if_label_index;
-                ctx.if_label_index += 1;
+                let label = ctx.label_index;
+                ctx.label_index += 1;
                 format!(
                     "{expr}\tjmp cr, if_then_{label}\n\tjmp 1, if_else_{label}\nif_then_{label}:\n{then}\tjmp 1, if_end_{label}\nif_else_{label}:\n{els}if_end_{label}:\n",
                     expr = cond!(expr),
@@ -45,8 +45,8 @@ impl Stmt {
             Stmt::While(expr, block) => {
                 let expr = expr.compile(ctx)?;
                 let block = block.compile(ctx)?;
-                let label = ctx.while_label_index;
-                ctx.while_label_index += 1;
+                let label = ctx.label_index;
+                ctx.label_index += 1;
                 format!(
                     "while_start_{label}:\n{expr}\tnor cr, cr\n\tjmp cr, while_end_{label}\n{block}\tjmp 1, while_start_{label}\nwhile_end_{label}:\n",
                     expr = cond!(expr),
