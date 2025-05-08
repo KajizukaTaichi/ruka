@@ -16,7 +16,6 @@ impl Block {
             if line.is_empty() {
                 continue;
             }
-            dbg!(&line);
 
             if nest == 0 {
                 if let Some(line) = line.strip_prefix("let") {
