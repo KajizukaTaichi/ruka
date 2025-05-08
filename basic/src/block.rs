@@ -1,5 +1,6 @@
 use crate::*;
 
+#[derive(Debug, Clone)]
 pub struct Block(Vec<Stmt>);
 
 impl Block {
