@@ -63,8 +63,9 @@ while_start_0:
 	pop ar
 	mul ar, dr
 	sta 4, ar	; n
-jmp 1, while_start_0
-while_end_0:	lda ar, 4	; n
+	jmp 1, while_start_0
+while_end_0:
+	lda ar, 4	; n
 	psh ar
 	ret
 	ret
