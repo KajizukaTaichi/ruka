@@ -11,17 +11,5 @@
 	jmp 1, if_else_0
 if_then_0:
 	jmp 1, if_end_0
-if_end_0:if_else_0:
-if_end_0:	mov ar, 5
-	psh ar
-	lda ar, 0	; a
-	mov dr, ar
-	pop ar
-	les ar, dr
-	mov cr, ar
-	jmp cr, if_then_1
-	jmp 1, if_else_1
-if_then_1:
-	jmp 1, if_end_1
-if_end_1:if_else_1:
-if_end_1:
+if_else_0:
+if_end_0:
