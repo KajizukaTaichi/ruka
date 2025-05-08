@@ -1,15 +1,18 @@
-let a = 10
-if a > 5
-    if a = 10
-        let a = 666
-    else
-        let c = 3.14
-    end if
-else
-    if a = 1
-        let a = 50
-    else
-        let b = 333
-    end if
-end if
-exit program
+Let bit = (1 + 2) * 3 - 7
+Let max_1byte = pow(bit, 8) - 1
+Exit Program
+
+Sub pow(base, exponent)
+    Let number = 1
+    Let index = 0
+    Let flag = true
+    While flag
+        If index = exponent
+            Let flag = false
+        Else
+            Let index = index + 1
+            Let number = number * base
+        End If
+    End While
+    Return number
+End Sub
