@@ -48,6 +48,13 @@ while_start_1:
 	jmp cr, while_end_1
 	lda ar, 5	; index
 	psh ar
+	mov ar, 1
+	mov dr, ar
+	pop ar
+	add ar, dr
+	sta 5, ar	; index
+	lda ar, 5	; index
+	psh ar
 	lda ar, 2	; exponent
 	mov dr, ar
 	pop ar
@@ -60,13 +67,6 @@ if_then_0:
 	sta 6, ar	; flag
 	jmp 1, if_end_0
 if_else_0:
-	lda ar, 5	; index
-	psh ar
-	mov ar, 1
-	mov dr, ar
-	pop ar
-	add ar, dr
-	sta 5, ar	; index
 	lda ar, 4	; number
 	psh ar
 	lda ar, 3	; base
