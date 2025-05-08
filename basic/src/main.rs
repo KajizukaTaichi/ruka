@@ -14,7 +14,6 @@ use {block::Block, expr::Expr, lexer::tokenize, oper::Oper, stmt::Stmt};
 fn main() {
     let mut compiler = Compiler::new();
     let code = include_str!("../example.bas").trim();
-    compiler.run(code).unwrap();
     compiler.run(code).map(|x| println!(" = {x}"));
 }
 
@@ -49,7 +48,7 @@ impl Compiler {
 
     fn build(&mut self, source: &str) -> Option<String> {
         let source = source.trim().to_lowercase();
-        let ast = Block::parse(source).unwrap();
+        let ast = Block::parse(source)?;
         Some(ast.compile(self)?)
     }
 }
